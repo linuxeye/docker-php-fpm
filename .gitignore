@@ -1,0 +1,5 @@
+.ansible/*.retry
+
+Makefile.docker
+Makefile.lint
+Makefile.python

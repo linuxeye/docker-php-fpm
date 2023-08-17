@@ -1,0 +1,196 @@
+---
+
+# -------------------------------------------------------------------------------------------------
+# Job Name
+# -------------------------------------------------------------------------------------------------
+name: nightly
+
+
+# -------------------------------------------------------------------------------------------------
+# When to run
+# -------------------------------------------------------------------------------------------------
+on:
+  # Nightly: At 00:00 on Monday, Wednesday, and Friday
+  schedule:
+    - cron: '0 18 * * 1,3,5'
+  # Dispatch: allows for manual trigger via GH UI
+  workflow_dispatch:
+
+
+jobs:
+
+  # -----------------------------------------------------------------------------------------------
+  # (1/9) Determine parameter settings
+  # -----------------------------------------------------------------------------------------------
+  params:
+    uses: ./.github/workflows/params-nightly_main.yml
+
+
+  # -----------------------------------------------------------------------------------------------
+  # (2/9) Configure Build and Deploy Matrices
+  # -----------------------------------------------------------------------------------------------
+  configure:
+    needs: [params]
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-configure.yml@main
+    with:
+      enabled: true
+      can_deploy: true
+      versions: ${{ needs.params.outputs.versions }}
+      refs: ${{ needs.params.outputs.refs }}
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+
+  # -----------------------------------------------------------------------------------------------
+  # (3/9) Build & Test base
+  # -----------------------------------------------------------------------------------------------
+  build-base:
+    needs:
+      - configure
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-build.yml@main
+    with:
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      run_tests: false
+      upload_artifact: true
+      pull_base_image: true
+      matrix: ${{ needs.configure.outputs.matrix_build }}
+      artifact_prefix: ${{ needs.configure.outputs.artifact_prefix }}
+      stage: base
+      stage_prev: ''
+
+  # -----------------------------------------------------------------------------------------------
+  # (4/9) Build & Test mods
+  # -----------------------------------------------------------------------------------------------
+  build-mods:
+    needs:
+      - configure
+      - build-base
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-build.yml@main
+    with:
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      run_tests: false
+      upload_artifact: true
+      matrix: ${{ needs.configure.outputs.matrix_build }}
+      artifact_prefix: ${{ needs.configure.outputs.artifact_prefix }}
+      stage: mods
+      stage_prev: base
+
+  # -----------------------------------------------------------------------------------------------
+  # (5/9) Build & Test prod
+  # -----------------------------------------------------------------------------------------------
+  build-prod:
+    needs:
+      - configure
+      - build-mods
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-build.yml@main
+    with:
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      run_tests: false
+      upload_artifact: true
+      matrix: ${{ needs.configure.outputs.matrix_build }}
+      artifact_prefix: ${{ needs.configure.outputs.artifact_prefix }}
+      stage: prod
+      stage_prev: mods
+
+  # -----------------------------------------------------------------------------------------------
+  # (8/9) Push images
+  # -----------------------------------------------------------------------------------------------
+  push-base:
+    needs:
+      - configure
+      - build-base
+      - build-mods
+      - build-prod
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-push-image.yml@main
+    with:
+      can_deploy: ${{ needs.configure.outputs.can_login == 'true' && needs.configure.outputs.can_push == 'true' }}
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      matrix: ${{ needs.configure.outputs.matrix_build }}
+      artifact_prefix: ${{ needs.configure.outputs.artifact_prefix }}
+      stage: base
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  push-mods:
+    needs:
+      - configure
+      - build-base
+      - build-mods
+      - build-prod
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-push-image.yml@main
+    with:
+      can_deploy: ${{ needs.configure.outputs.can_login == 'true' && needs.configure.outputs.can_push == 'true' }}
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      matrix: ${{ needs.configure.outputs.matrix_build }}
+      artifact_prefix: ${{ needs.configure.outputs.artifact_prefix }}
+      stage: mods
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  push-prod:
+    needs:
+      - configure
+      - build-base
+      - build-mods
+      - build-prod
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-push-image.yml@main
+    with:
+      can_deploy: ${{ needs.configure.outputs.can_login == 'true' && needs.configure.outputs.can_push == 'true' }}
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      matrix: ${{ needs.configure.outputs.matrix_build }}
+      artifact_prefix: ${{ needs.configure.outputs.artifact_prefix }}
+      stage: prod
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  # -----------------------------------------------------------------------------------------------
+  # (9/9) Push Manifests
+  # -----------------------------------------------------------------------------------------------
+  manifest-base:
+    needs:
+      - configure
+      - push-base
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-push-manifest.yml@main
+    with:
+      can_deploy: ${{ needs.configure.outputs.can_login == 'true' && needs.configure.outputs.can_push == 'true' }}
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      matrix: ${{ needs.configure.outputs.matrix_deploy }}
+      versions: ${{ needs.configure.outputs.versions }}
+      stage: base
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  manifest-mods:
+    needs:
+      - configure
+      - push-mods
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-push-manifest.yml@main
+    with:
+      can_deploy: ${{ needs.configure.outputs.can_login == 'true' && needs.configure.outputs.can_push == 'true' }}
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      matrix: ${{ needs.configure.outputs.matrix_deploy }}
+      versions: ${{ needs.configure.outputs.versions }}
+      stage: mods
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  manifest-prod:
+    needs:
+      - configure
+      - push-prod
+    uses: linuxeye/github-actions/.github/workflows/docker-multistage-push-manifest.yml@main
+    with:
+      can_deploy: ${{ needs.configure.outputs.can_login == 'true' && needs.configure.outputs.can_push == 'true' }}
+      has_refs: ${{ needs.configure.outputs.has_refs == 'true' }}
+      matrix: ${{ needs.configure.outputs.matrix_deploy }}
+      versions: ${{ needs.configure.outputs.versions }}
+      stage: prod
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
