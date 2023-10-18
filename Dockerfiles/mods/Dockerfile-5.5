@@ -391,6 +391,7 @@ RUN set -eux \
     | grep -Eo 'href="getPackage/oracle-instantclient.+basiclite.+rpm"' \
     | tail -1 \
 )" \
+&& ( [ "`arch`" == "aarch64" ] && ORACLE_HREF="getPackage/oracle-instantclient19.10-basiclite-19.10.0.0.0-2.aarch64.rpm" || true ) \
 && ORACLE_VERSION_MAJOR="$( echo "${ORACLE_HREF}" | grep -Eo 'instantclient[.0-9]+' | sed 's/instantclient//g' )" \
 && ORACLE_VERSION_FULL="$( echo "${ORACLE_HREF}" | grep -Eo 'basiclite-[-.0-9]+' | sed -e 's/basiclite-//g' -e 's/\.$//g' )" \
 \
