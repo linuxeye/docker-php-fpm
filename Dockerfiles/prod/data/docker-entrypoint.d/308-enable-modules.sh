@@ -37,13 +37,7 @@ enable_modules() {
 
 			# Does the module exist?
 			if [ -f "${mod_path}/${mod}.so" ]; then
-				# Exceptions to load speficially
-				if [ "${mod}" = "ioncube" ]; then
-					run "echo 'zend_extension=${mod_path}/ioncube.so' > '${cfg_path}/docker-ext-php-ext-ioncube.ini'" "${debug}"
-				# Generic Load
-				else
-					run "docker-php-ext-enable ${mod} || true" "${debug}"
-				fi
+				run "docker-php-ext-enable ${mod} || true" "${debug}"
 			else
 				log "warn" "Enabling PHP Module: '${mod}' does not exist" "${debug}"
 			fi
