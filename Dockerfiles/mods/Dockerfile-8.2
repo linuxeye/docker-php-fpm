@@ -692,6 +692,17 @@ RUN set -eux \
 	&& true
 
 
+# -------------------- Installing PHP Extension: solr --------------------
+RUN set -eux \
+        # Installation: Generic
+        # Type:         PECL extension
+        # Default:      Pecl command
+        && pecl install solr \
+        # Enabling
+        && docker-php-ext-enable solr \
+        && true
+
+
 # -------------------- Installing PHP Extension: sodium --------------------
 RUN set -eux \
 	# Installation: Generic
@@ -1103,6 +1114,8 @@ RUN set -eux \
 	&& php-fpm -m | grep -oiE '^sockets$' \
 	&& php -m | grep -oiE '^sodium$' \
 	&& php-fpm -m | grep -oiE '^sodium$' \
+	&& php -m | grep -oiE '^solr$' \
+	&& php-fpm -m | grep -oiE '^solr$' \
 	&& php -m | grep -oiE '^spl$' \
 	&& php-fpm -m | grep -oiE '^spl$' \
 	&& php -m | grep -oiE '^xml$' \
