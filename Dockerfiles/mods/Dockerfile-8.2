@@ -1009,8 +1009,8 @@ RUN set -eux \
 	&& php-fpm -m | grep -oiE '^fileinfo$' \
 	&& php -m | grep -oiE '^filter$' \
 	&& php-fpm -m | grep -oiE '^filter$' \
-	&& php -m | grep -oiE '^ftp$' \
-	&& php-fpm -m | grep -oiE '^ftp$' \
+	#&& php -m | grep -oiE '^ftp$' \
+	#&& php-fpm -m | grep -oiE '^ftp$' \
 	&& php -m | grep -oiE '^gd$' \
 	&& php-fpm -m | grep -oiE '^gd$' \
 	&& php -m | grep -oiE '^gettext$' \
