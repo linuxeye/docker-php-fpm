@@ -606,7 +606,7 @@ fi \
 	&& git clone https://github.com/phpredis/phpredis /tmp/redis \
 	&& cd /tmp/redis \
 	# Custom:       Branch
-	&& git checkout $(git tag | grep -E '^[.0-9]+$' | sort -V | tail -1) \
+	&& git checkout $(git tag | grep -E '^6.0[.0-9]+$' | sort -V | tail -1) \
 	# Custom:       Install command
 	&& REDIS_ARGS=""; \
 if php -m | grep -q "igbinary"; then \
