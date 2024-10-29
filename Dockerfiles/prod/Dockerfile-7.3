@@ -5,25 +5,6 @@ MAINTAINER "Justo" <lj2007331@gmail.com>
 
 
 ###
-### Labels
-###
-# https://github.com/opencontainers/image-spec/blob/master/annotations.md
-#LABEL "org.opencontainers.image.created"=""
-#LABEL "org.opencontainers.image.version"=""
-#LABEL "org.opencontainers.image.revision"=""
-#LABEL "maintainer"="cytopia <cytopia@everythingcli.org>"
-#LABEL "org.opencontainers.image.authors"="cytopia <cytopia@everythingcli.org>"
-#LABEL "org.opencontainers.image.url"="https://github.com/devilbox/docker-php-fpm"
-#LABEL "org.opencontainers.image.documentation"="https://github.com/devilbox/docker-php-fpm"
-#LABEL "org.opencontainers.image.source"="https://github.com/devilbox/docker-php-fpm"
-#LABEL "org.opencontainers.image.vendor"="devilbox"
-#LABEL "org.opencontainers.image.licenses"="MIT"
-#LABEL "org.opencontainers.image.ref.name"="7.3-prod"
-#LABEL "org.opencontainers.image.title"="PHP-FPM 7.3-prod"
-#LABEL "org.opencontainers.image.description"="PHP-FPM 7.3-prod"
-
-
-###
 ### Install
 ###
 RUN set -eux \
@@ -34,24 +15,11 @@ RUN set -eux \
 		postfix-pcre \
 		cron \
 		rsyslog \
-		socat \
-		supervisor \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
 # Fix: rsyslogd: imklog: cannot open kernel log (/proc/kmsg): Operation not permitted.
 	&& sed -i''  's/.*imklog.*//g' /etc/rsyslog.conf \
 	\
-# Setup Supervisor
-	&& rm -rf /etc/supervisor* \
-	&& mkdir -p /var/log/supervisor \
-	&& mkdir -p /etc/supervisor/conf.d \
-	&& mkdir -p /etc/supervisor/custom.d \
-	&& chown bypanel:bypanel /etc/supervisor/custom.d \
-	\
-	&& (find /usr/local/bin  -type f -print0 | xargs -n1 -0 -P$(getconf _NPROCESSORS_ONLN) strip --strip-all -p 2>/dev/null || true) \
-	&& (find /usr/local/lib  -type f -print0 | xargs -n1 -0 -P$(getconf _NPROCESSORS_ONLN) strip --strip-all -p 2>/dev/null || true) \
-	&& (find /usr/local/sbin -type f -print0 | xargs -n1 -0 -P$(getconf _NPROCESSORS_ONLN) strip --strip-all -p 2>/dev/null || true) \
-        \
 # Install Componser
         && curl https://getcomposer.org/download/latest-stable/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 
@@ -100,5 +68,5 @@ EXPOSE 9000
 ###
 ### Entrypoint
 ###
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/local/sbin/php-fpm"]
 ENTRYPOINT ["/docker-entrypoint.sh"]

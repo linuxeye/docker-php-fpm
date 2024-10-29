@@ -113,50 +113,6 @@ fi
 
 
 ###
-### Validate socat port forwards
-###
-if ! port_forward_validate "FORWARD_PORTS_TO_LOCALHOST" "${DEBUG_LEVEL}"; then
-	exit 1
-fi
-
-
-###
-### Supvervisor: supervisord.conf
-###
-supervisor_create_config "/etc/supervisor/supervisord.conf"
-
-
-###
-### Supervisor: socat
-###
-for line in $( port_forward_get_lines "FORWARD_PORTS_TO_LOCALHOST" ); do
-	lport="$( port_forward_get_lport "${line}" )"
-	rhost="$( port_forward_get_rhost "${line}" )"
-	rport="$( port_forward_get_rport "${line}" )"
-	supervisor_add_service \
-		"socat-${lport}-${rhost}-${rport}" \
-		"/usr/bin/socat tcp-listen:${lport},reuseaddr,fork tcp:${rhost}:${rport}" \
-		"${SUPERVISOR_CONFD}" \
-		"${DEBUG_LEVEL}"
-done
-
-
-###
-### Supervisor: rsyslogd & postfix
-###
-if [ "$( env_get "ENABLE_MAIL" )" = "1" ] || [ "$( env_get "ENABLE_MAIL" )" = "2" ]; then
-	supervisor_add_service "rsyslogd" "/usr/sbin/rsyslogd -n"      "${SUPERVISOR_CONFD}" "${DEBUG_LEVEL}" "1"
-	supervisor_add_service "postfix"  "/usr/local/sbin/postfix.sh" "${SUPERVISOR_CONFD}" "${DEBUG_LEVEL}"
-fi
-
-
-###
-### Supervisor: php-fpm
-###
-supervisor_add_service "php-fpm"  "/usr/local/sbin/php-fpm" "${SUPERVISOR_CONFD}" "${DEBUG_LEVEL}"
-
-
-###
 ### Copy custom *.ini files
 ###
 copy_ini_files "${PHP_CUST_INI_DIR}" "${PHP_INI_DIR}" "${DEBUG_LEVEL}"
@@ -190,5 +146,5 @@ execute_custom_scripts "/startup.2.d" "${DEBUG_LEVEL}"
 ###
 ### Startup
 ###
-log "info" "Starting supervisord" "${DEBUG_LEVEL}"
+log "info" "Starting $( php-fpm -v 2>&1 | head -1 )" "${DEBUG_LEVEL}"
 exec "${@}"
