@@ -231,10 +231,8 @@ The provided Docker images offer different volumes to be mounted.
 | [`/startup.2.d/`][lnk_vol_startup2]                | Add custom startup `*.sh` files       |
 | [`/var/log/php/`][lnk_vol_log_php]                 | Find PHP log files                    |
 | [`/var/mail/`][lnk_vol_mail]                       | Find sent emails                      |
-| [`/etc/supervisor/custom.d/`][lnk_vol_supervisor]  | Add custom supervisord `*.conf` files |
 | [`/etc/bashrc-devilbox.d/`][lnk_vol_bashrc]        | Add custom bashrc files               |
 | [`/shared/backups/`][lnk_vol_backups]              | Find MySQL backups                    |
-| [`/ca/`][lnk_vol_ca]                               | Add custom Certificate Authority      |
 
 [lnk_vol_php_custom]: doc/docker-volumes.md#-etcphp-customd
 [lnk_vol_php_fpm_custom]: doc/docker-volumes.md#-etcphp-fpm-customd
