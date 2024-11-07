@@ -18,15 +18,15 @@ set -o pipefail
 # Path to scripts to source
 CONFIG_DIR="/docker-entrypoint.d"
 
-# php.ini.d directory
-PHP_INI_DIR="/usr/local/etc/php/conf.d"
+# php.ini directory
+PHP_INI_DIR="/usr/local/etc/php"
 
 # php-fpm conf.d directory
 PHP_FPM_DIR="/usr/local/etc/php-fpm.d"
 
 # This file holds error and access log definitions
 PHP_FPM_CONF_LOGFILE="${PHP_FPM_DIR}/zzz-entrypoint-logfiles.conf"
-PHP_INI_CONF_LOGFILE="${PHP_INI_DIR}/zzz-entrypoint-logfiles.ini"
+PHP_INI_CONF_LOGFILE="${PHP_INI_DIR}/conf.d/zzz-entrypoint-logfiles.ini"
 
 # PHP-FPM log dir
 FPM_LOG_DIR="/var/log/php"
@@ -39,9 +39,6 @@ PHP_CUST_INI_DIR="/etc/php-custom.d"
 
 # Custom PHP-FPM dir (to be copied to actual FPM conf dir)
 PHP_CUST_FPM_DIR="/etc/php-fpm-custom.d"
-
-# Supervisord config directory
-SUPERVISOR_CONFD="/etc/supervisor/conf.d"
 
 
 ###
@@ -76,7 +73,7 @@ set_gid "NEW_GID" "${MY_GROUP}" "/home/${MY_USER}" "${DEBUG_LEVEL}"
 ###
 ### Set timezone
 ###
-set_timezone "TIMEZONE" "${PHP_INI_DIR}" "${DEBUG_LEVEL}"
+set_timezone "TIMEZONE" "${PHP_INI_DIR}/conf.d" "${DEBUG_LEVEL}"
 
 
 ###
@@ -105,17 +102,17 @@ set_docker_logs \
 ###
 if is_docker_logs_enabled "DOCKER_LOGS" >/dev/null; then
 	# PHP mail function should log to stderr
-	set_postfix "ENABLE_MAIL" "${MY_USER}" "${MY_GROUP}" "${PHP_INI_DIR}" "/proc/self/fd/2" "1" "${DEBUG_LEVEL}"
+	set_postfix "ENABLE_MAIL" "${MY_USER}" "${MY_GROUP}" "${PHP_INI_DIR}/conf.d" "/proc/self/fd/2" "1" "${DEBUG_LEVEL}"
 else
 	# PHP mail function should log to file
-	set_postfix "ENABLE_MAIL" "${MY_USER}" "${MY_GROUP}" "${PHP_INI_DIR}" "${PHP_MAIL_LOG}" "0" "${DEBUG_LEVEL}"
+	set_postfix "ENABLE_MAIL" "${MY_USER}" "${MY_GROUP}" "${PHP_INI_DIR}/conf.d" "${PHP_MAIL_LOG}" "0" "${DEBUG_LEVEL}"
 fi
 
 
 ###
 ### Copy custom *.ini files
 ###
-copy_ini_files "${PHP_CUST_INI_DIR}" "${PHP_INI_DIR}" "${DEBUG_LEVEL}"
+copy_ini_files "${PHP_CUST_INI_DIR}" "${PHP_INI_DIR}/conf.d" "${DEBUG_LEVEL}"
 
 
 ###
