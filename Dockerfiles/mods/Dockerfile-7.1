@@ -589,7 +589,7 @@ RUN set -eux \
 	&& git clone https://github.com/kjdev/php-ext-zstd /tmp/zstd \
 	&& cd /tmp/zstd \
 	# Custom:       Branch
-	&& git checkout $(git tag | grep -E '^[.0-9]+$' | sort -V | tail -1) \
+	&& git checkout $(git tag | grep -E '^0.13[.0-9]+$' | sort -V | tail -1) \
 	# Default:      Install command
 	&& phpize \
 	&& ./configure  --enable-zstd --with-libzstd \
