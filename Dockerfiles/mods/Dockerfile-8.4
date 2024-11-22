@@ -1,6 +1,6 @@
 # vi: ft=dockerfile
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
-FROM bypanel/php-fpm:8.3-base as builder
+FROM bypanel/php-fpm:8.4-base as builder
 
 
 ###
@@ -264,20 +264,20 @@ RUN set -eux \
 
 
 # -------------------- Installing PHP Extension: ioncube --------------------
-RUN set -eux \
-	# Installation: Generic
-	# Type:         Custom extension
-	&& EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )" \
-&& if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi \
-&& curl -sS --fail -k https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$(dpkg-architecture --query DEB_HOST_GNU_CPU | sed 's/_/-/g').tar.gz -L -o ioncube.tar.gz \
-&& tar xvfz ioncube.tar.gz \
-&& cd ioncube \
-&& cp "ioncube_loader_lin_8.3.so" "${EXTENSION_DIR}/ioncube.so" \
-&& cd ../ \
-&& rm -rf ioncube \
-&& rm -rf ioncube.tar.gz \
- \
-	&& true
+#RUN set -eux \
+#	# Installation: Generic
+#	# Type:         Custom extension
+#	&& EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )" \
+#&& if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi \
+#&& curl -sS --fail -k https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$(dpkg-architecture --query DEB_HOST_GNU_CPU | sed 's/_/-/g').tar.gz -L -o ioncube.tar.gz \
+#&& tar xvfz ioncube.tar.gz \
+#&& cd ioncube \
+#&& cp "ioncube_loader_lin_8.4.so" "${EXTENSION_DIR}/ioncube.so" \
+#&& cd ../ \
+#&& rm -rf ioncube \
+#&& rm -rf ioncube.tar.gz \
+# \
+#	&& true
 
 
 # -------------------- Installing PHP Extension: ldap --------------------
@@ -353,7 +353,7 @@ RUN set -eux \
 	&& git checkout master \
 	# Custom:       Install command
 	&& true \
-# FIXME: This is a work-around to mitigate compile error with PHP 8.3
+# FIXME: This is a work-around to mitigate compile error with PHP 8.4
 && sed -i'' 's/\sTSRMLS_CC//g' php_memcached_session.c \
 && phpize \
 && ./configure --enable-memcached \
@@ -854,27 +854,8 @@ RUN set -eux \
 
 
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
-FROM bypanel/php-fpm:8.3-base as final
+FROM bypanel/php-fpm:8.4-base as final
 MAINTAINER "Justo" <lj2007331@gmail.com>
-
-###
-### Labels
-###
-# https://github.com/opencontainers/image-spec/blob/master/annotations.md
-#LABEL "org.opencontainers.image.created"=""
-#LABEL "org.opencontainers.image.version"=""
-#LABEL "org.opencontainers.image.revision"=""
-#LABEL "maintainer"="cytopia <cytopia@everythingcli.org>"
-#LABEL "org.opencontainers.image.authors"="cytopia <cytopia@everythingcli.org>"
-#LABEL "org.opencontainers.image.url"="https://github.com/devilbox/docker-php-fpm"
-#LABEL "org.opencontainers.image.documentation"="https://github.com/devilbox/docker-php-fpm"
-#LABEL "org.opencontainers.image.source"="https://github.com/devilbox/docker-php-fpm"
-#LABEL "org.opencontainers.image.vendor"="devilbox"
-#LABEL "org.opencontainers.image.licenses"="MIT"
-#LABEL "org.opencontainers.image.ref.name"="8.3-mods"
-#LABEL "org.opencontainers.image.title"="PHP-FPM 8.3-mods"
-#LABEL "org.opencontainers.image.description"="PHP-FPM 8.3-mods"
-
 
 ###
 ### Install runtime libraries
@@ -969,7 +950,7 @@ RUN set -eux \
 ###
 RUN set -eux \
 	&& echo "date.timezone=UTC" > /usr/local/etc/php/php.ini \
-	&& php -v | grep -oE 'PHP\s[.0-9]+' | grep -oE '[.0-9]+' | grep '^8.3' \
+	&& php -v | grep -oE 'PHP\s[.0-9]+' | grep -oE '[.0-9]+' | grep '^8.4' \
 	&& /usr/local/sbin/php-fpm --test \
 	\
 	&& PHP_ERROR="$( php -v 2>&1 1>/dev/null )" \
