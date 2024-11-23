@@ -216,7 +216,7 @@ RUN set -eux \
 # -------------------- Installing PHP Extension: imagick --------------------
 RUN set -eux \
 	# Installation: Generic
-	# Type:         PECL extension
+	# Type:         GIT extension
 	# Default:      Pecl command
 	&& curl -fL -o imagick.tgz 'https://github.com/michalananapps/imagick/archive/refs/heads/master.tar.gz' \
 	&& tar --extract --directory /tmp --file imagick.tgz imagick-master \
@@ -244,20 +244,21 @@ RUN set -eux \
 RUN set -eux \
         # Generic pre-command
         && ln -s /usr/lib/$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)/libkrb5* /usr/lib/ \
-        # Installation: Generic
-        # Type:         GIT extension
-        && git clone https://github.com/php/pecl-mail-imap /tmp/pecl-mail-imap \
-        && cd /tmp/pecl-mail-imap \
-        # Custom:       Branch
-        && git checkout $(git tag | grep -E '^[.0-9]+$' | sort -V | tail -1) \
-        # Default:      Install command
-        && phpize \
-        && ./configure  --with-kerberos --with-imap-ssl --with-imap \
-        && make -j$(getconf _NPROCESSORS_ONLN) \
-        && make install \
-        # Enabling
-        && docker-php-ext-enable imap \
-        && true
+	# Installation: Generic
+	# Type:         GIT extension
+	&& git clone https://github.com/php/pecl-mail-imap /tmp/pecl-mail-imap \
+	&& cd /tmp/pecl-mail-imap \
+	# Custom:       Branch
+	&& git checkout $(git tag | grep -E '^[.0-9]+$' | sort -V | tail -1) \
+	# Default:      Install command
+	&& phpize \
+	&& ./configure  --with-kerberos --with-imap-ssl --with-imap \
+	&& make -j$(getconf _NPROCESSORS_ONLN) \
+	&& make install \
+	&& cd /tmp && rm -rf /tmp/pecl-mail-imap \
+	# Enabling
+	&& docker-php-ext-enable imap \
+	&& true
 
 
 # -------------------- Installing PHP Extension: intl --------------------
@@ -432,10 +433,17 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 && rm -f /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-devel-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
  \
 	# Installation: Generic
-	# Type:         Built-in extension
-	# Custom:       configure command
-	&& docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/,${ORACLE_VERSION_MAJOR} \
-	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) oci8 \
+	# Type:         GIT extension
+	&& git clone https://github.com/php/pecl-database-oci8 /tmp/pecl-database-oci8 \
+	&& cd /tmp/pecl-database-oci8 \
+	# Custom:       Branch
+	&& git checkout $(git tag | grep -E 'v[.0-9]+$' | sort -V | tail -1) \
+	# Default:      Install command
+	&& phpize \
+	&& ./configure --with-oci8=instantclient,/usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/,${ORACLE_VERSION_MAJOR} \
+	&& make -j$(getconf _NPROCESSORS_ONLN) \
+	&& make install \
+	&& cd /tmp && rm -rf /tmp/pecl-database-oci8 \
 	# Generic post-command
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
 && ORACLE_HREF="$( \
