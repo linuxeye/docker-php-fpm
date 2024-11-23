@@ -220,9 +220,6 @@ RUN set -eux \
 	# Default:      Pecl command
 	&& curl -fL -o imagick.tgz 'https://github.com/michalananapps/imagick/archive/refs/heads/master.tar.gz' \
 	&& tar --extract --directory /tmp --file imagick.tgz imagick-master \
-	&& grep '^//#endif$' /tmp/imagick-master/Imagick.stub.php \
-	&& test "$(grep -c '^//#endif$' /tmp/imagick-master/Imagick.stub.php)" = '1' \
-	&& sed -i -e 's!^//#endif$!#endif!' /tmp/imagick-master/Imagick.stub.php \
 	&& docker-php-ext-install /tmp/imagick-master \
 	&& rm -rf imagick.tgz /tmp/imagick-master \
 	\
