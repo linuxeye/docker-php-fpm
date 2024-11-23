@@ -432,7 +432,7 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 && rm -f /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-basiclite-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
 && rm -f /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-devel-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
  \
-	# Installation: Generic
+	# Installation: Version specific
 	# Type:         GIT extension
 	&& git clone https://github.com/php/pecl-database-oci8 /tmp/pecl-database-oci8 \
 	&& cd /tmp/pecl-database-oci8 \
@@ -503,7 +503,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         Built-in extension
 	# Custom:       configure command
-	&& docker-php-ext-configure pdo_mysql --with-zlib-dir=/usr \
+	&& docker-php-ext-configure pdo_mysql \
 	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) pdo_mysql \
 	&& true
 
@@ -541,11 +541,15 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 && (ln -s /usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/*.so* /usr/lib/ || true) \
  \
 	# Installation: Version specific
-	# Type:         Built-in extension
-	# Custom:       configure command
-	&& docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/,${ORACLE_VERSION_MAJOR} \
-	# Installation
-	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) pdo_oci \
+	# Type:         GIT extension
+	&& git clone https://github.com/php/pecl-database-pdo_oci /tmp/pecl-database-pdo_oci \
+	&& cd /tmp/pecl-database-pdo_oci \
+	# Default:      Install command
+	&& phpize \
+	&& ./configure --with-pdo-oci=instantclient,/usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/,${ORACLE_VERSION_MAJOR} \
+	&& make -j$(getconf _NPROCESSORS_ONLN) \
+	&& make install \
+	&& cd /tmp && rm -rf /tmp/pecl-database-pdo_oci \
 	&& true
 
 
