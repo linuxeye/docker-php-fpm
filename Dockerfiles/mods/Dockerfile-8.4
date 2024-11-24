@@ -458,6 +458,8 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 && ORACLE_VERSION_FULL="$( echo "${ORACLE_HREF}" | grep -Eo 'basiclite-[-.0-9]+' | sed -e 's/basiclite-//g' -e 's/\.$//g' )" \
 && (ln -sf /usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/*.so* /usr/lib/ || true) \
  \
+	# Enabling
+	&& docker-php-ext-enable oci8 \
 	&& true
 
 
@@ -550,6 +552,8 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
 	&& make install \
 	&& cd /tmp && rm -rf /tmp/pecl-database-pdo_oci \
+	# Enabling
+	&& docker-php-ext-enable pdo_oci \
 	&& true
 
 
