@@ -663,8 +663,9 @@ RUN set -eux \
 # -------------------- Installing PHP Extension: pspell --------------------
 RUN set -eux \
 	# Installation: Generic
-	# Type:         Built-in extension
-	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) pspell \
+	# Type:         PECL extension
+	# Default:      Pecl command
+	&& pecl install pspell \
 	&& true
 
 
@@ -805,7 +806,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install xdebug-3.3.0alpha3 \
+	&& pecl install xdebug \
 	# Enabling
 	&& docker-php-ext-enable xdebug \
 	&& true

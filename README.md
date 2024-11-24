@@ -15,9 +15,9 @@ This repository also allows you to quickly generate and **build your own custom 
 docker pull bypanel/php-fpm:<tag>
 ```
 
-* [`5.3-base`](Dockerfiles/base/Dockerfile-5.3), [`5.4-base`](Dockerfiles/base/Dockerfile-5.4), [`5.5-base`](Dockerfiles/base/Dockerfile-5.5), [`5.6-base`](Dockerfiles/base/Dockerfile-5.6), [`7.0-base`](Dockerfiles/base/Dockerfile-7.0), [`7.1-base`](Dockerfiles/base/Dockerfile-7.1), [`7.2-base`](Dockerfiles/base/Dockerfile-7.2), [`7.3-base`](Dockerfiles/base/Dockerfile-7.3), [`7.4-base`](Dockerfiles/base/Dockerfile-7.4), [`8.0-base`](Dockerfiles/base/Dockerfile-8.0), [`8.1-base`](Dockerfiles/base/Dockerfile-8.1), [`8.2-base`](Dockerfiles/base/Dockerfile-8.2), [`8.3-base`](Dockerfiles/base/Dockerfile-8.3)
-* [`5.3-mods`](Dockerfiles/mods/Dockerfile-5.3), [`5.4-mods`](Dockerfiles/mods/Dockerfile-5.4), [`5.5-mods`](Dockerfiles/mods/Dockerfile-5.5), [`5.6-mods`](Dockerfiles/mods/Dockerfile-5.6), [`7.0-mods`](Dockerfiles/mods/Dockerfile-7.0), [`7.1-mods`](Dockerfiles/mods/Dockerfile-7.1), [`7.2-mods`](Dockerfiles/mods/Dockerfile-7.2), [`7.3-mods`](Dockerfiles/mods/Dockerfile-7.3), [`7.4-mods`](Dockerfiles/mods/Dockerfile-7.4), [`8.0-mods`](Dockerfiles/mods/Dockerfile-8.0), [`8.1-mods`](Dockerfiles/mods/Dockerfile-8.1), [`8.2-mods`](Dockerfiles/mods/Dockerfile-8.2), [`8.3-mods`](Dockerfiles/mods/Dockerfile-8.3)
-* [`5.3-prod`](Dockerfiles/prod/Dockerfile-5.3), [`5.4-prod`](Dockerfiles/prod/Dockerfile-5.4), [`5.5-prod`](Dockerfiles/prod/Dockerfile-5.5), [`5.6-prod`](Dockerfiles/prod/Dockerfile-5.6), [`7.0-prod`](Dockerfiles/prod/Dockerfile-7.0), [`7.1-prod`](Dockerfiles/prod/Dockerfile-7.1), [`7.2-prod`](Dockerfiles/prod/Dockerfile-7.2), [`7.3-prod`](Dockerfiles/prod/Dockerfile-7.3), [`7.4-prod`](Dockerfiles/prod/Dockerfile-7.4), [`8.0-prod`](Dockerfiles/prod/Dockerfile-8.0), [`8.1-prod`](Dockerfiles/prod/Dockerfile-8.1), [`8.2-prod`](Dockerfiles/prod/Dockerfile-8.2), [`8.3-prod`](Dockerfiles/prod/Dockerfile-8.3)
+* [`5.3-base`](Dockerfiles/base/Dockerfile-5.3), [`5.4-base`](Dockerfiles/base/Dockerfile-5.4), [`5.5-base`](Dockerfiles/base/Dockerfile-5.5), [`5.6-base`](Dockerfiles/base/Dockerfile-5.6), [`7.0-base`](Dockerfiles/base/Dockerfile-7.0), [`7.1-base`](Dockerfiles/base/Dockerfile-7.1), [`7.2-base`](Dockerfiles/base/Dockerfile-7.2), [`7.3-base`](Dockerfiles/base/Dockerfile-7.3), [`7.4-base`](Dockerfiles/base/Dockerfile-7.4), [`8.0-base`](Dockerfiles/base/Dockerfile-8.0), [`8.1-base`](Dockerfiles/base/Dockerfile-8.1), [`8.2-base`](Dockerfiles/base/Dockerfile-8.2), [`8.3-base`](Dockerfiles/base/Dockerfile-8.3), [`8.4-base`](Dockerfiles/base/Dockerfile-8.4)
+* [`5.3-mods`](Dockerfiles/mods/Dockerfile-5.3), [`5.4-mods`](Dockerfiles/mods/Dockerfile-5.4), [`5.5-mods`](Dockerfiles/mods/Dockerfile-5.5), [`5.6-mods`](Dockerfiles/mods/Dockerfile-5.6), [`7.0-mods`](Dockerfiles/mods/Dockerfile-7.0), [`7.1-mods`](Dockerfiles/mods/Dockerfile-7.1), [`7.2-mods`](Dockerfiles/mods/Dockerfile-7.2), [`7.3-mods`](Dockerfiles/mods/Dockerfile-7.3), [`7.4-mods`](Dockerfiles/mods/Dockerfile-7.4), [`8.0-mods`](Dockerfiles/mods/Dockerfile-8.0), [`8.1-mods`](Dockerfiles/mods/Dockerfile-8.1), [`8.2-mods`](Dockerfiles/mods/Dockerfile-8.2), [`8.3-mods`](Dockerfiles/mods/Dockerfile-8.3), [`8.4-mods`](Dockerfiles/mods/Dockerfile-8.4)
+* [`5.3-prod`](Dockerfiles/prod/Dockerfile-5.3), [`5.4-prod`](Dockerfiles/prod/Dockerfile-5.4), [`5.5-prod`](Dockerfiles/prod/Dockerfile-5.5), [`5.6-prod`](Dockerfiles/prod/Dockerfile-5.6), [`7.0-prod`](Dockerfiles/prod/Dockerfile-7.0), [`7.1-prod`](Dockerfiles/prod/Dockerfile-7.1), [`7.2-prod`](Dockerfiles/prod/Dockerfile-7.2), [`7.3-prod`](Dockerfiles/prod/Dockerfile-7.3), [`7.4-prod`](Dockerfiles/prod/Dockerfile-7.4), [`8.0-prod`](Dockerfiles/prod/Dockerfile-8.0), [`8.1-prod`](Dockerfiles/prod/Dockerfile-8.1), [`8.2-prod`](Dockerfiles/prod/Dockerfile-8.2), [`8.3-prod`](Dockerfiles/prod/Dockerfile-8.3), [`8.4-prod`](Dockerfiles/prod/Dockerfile-8.4)
 
 :information_source: For details see **[Documentation: Docker Tags](doc/docker-tags.md)**<br/>
 :information_source: For details see **[Documentation: Supported Architectures](doc/supported-architectures.md)**
@@ -30,7 +30,7 @@ The following PHP versions are provided by this repository.
 
 * `PHP 5.3`, `PHP 5.4`, `PHP 5.5`, `PHP 5.6`
 * `PHP 7.0`, `PHP 7.1`, `PHP 7.2`, `PHP 7.3`, `PHP 7.4`
-* `PHP 8.0`, `PHP 8.1`, `PHP 8.2`, `PHP 8.3`
+* `PHP 8.0`, `PHP 8.1`, `PHP 8.2`, `PHP 8.3`, `PHP 8.4`
 
 > **Note:** Unreleased PHP versions are built from custom base images.
 
@@ -196,8 +196,6 @@ The provided Docker images offer environment variables to alter their startup be
 | [`DOCKER_LOGS`][lnk_env_logs]                   | Make PHP log to file or docker logs                           |
 | [`ENABLE_MODULES`][lnk_env_enable_mods]         | Enable specific PHP extensions                                |
 | [`DISABLE_MODULES`][lnk_env_disable_mods]       | Disable specific PHP extensions                               |
-| [`ENABLE_MAIL`][lnk_env_enable_mail]            | Control email-catch all (to not accidentally send out emails) |
-| [`FORWARD_PORTS_TO_LOCALHOST`][lnk_env_forward] | Make remote ports available locally inside the container      |
 | [`MYSQL_BACKUP_USER`][lnk_env_backup_user]      | Set MySQL username (for backups)                              |
 | [`MYSQL_BACKUP_PASS`][lnk_env_backup_pass]      | Set MySQL password (for backups)                              |
 | [`MYSQL_BACKUP_HOST`][lnk_env_backup_host]      | Set MySQL hostname (for backups)                              |
@@ -230,8 +228,6 @@ The provided Docker images offer different volumes to be mounted.
 | [`/startup.1.d/`][lnk_vol_startup1]                | Add custom startup `*.sh` files       |
 | [`/startup.2.d/`][lnk_vol_startup2]                | Add custom startup `*.sh` files       |
 | [`/var/log/php/`][lnk_vol_log_php]                 | Find PHP log files                    |
-| [`/var/mail/`][lnk_vol_mail]                       | Find sent emails                      |
-| [`/etc/bashrc-devilbox.d/`][lnk_vol_bashrc]        | Add custom bashrc files               |
 | [`/shared/backups/`][lnk_vol_backups]              | Find MySQL backups                    |
 
 [lnk_vol_php_custom]: doc/docker-volumes.md#-etcphp-customd
@@ -239,11 +235,8 @@ The provided Docker images offer different volumes to be mounted.
 [lnk_vol_startup1]: doc/docker-volumes.md#-startup1d
 [lnk_vol_startup2]: doc/docker-volumes.md#-startup2d
 [lnk_vol_log_php]: doc/docker-volumes.md#-varlogphp
-[lnk_vol_mail]: doc/docker-volumes.md#-varmail
-[lnk_vol_supervisor]: doc/docker-volumes.md#-etcsupervisorcustomd
 [lnk_vol_bashrc]: doc/docker-volumes.md#-etcbashrc-devilboxd
 [lnk_vol_backups]: doc/docker-volumes.md#-sharedbackups
-[lnk_vol_ca]: doc/docker-volumes.md#-ca
 
 <h2>Ports</h2>
 
@@ -276,8 +269,6 @@ Each PHP version is using the same sane default php.ini values, making it pain-f
 | base    | [php.ini](Dockerfiles/base/data/php-ini.d/) and [php-fpm.conf](Dockerfiles/base/data/php-fpm.conf/) |
 | mods    | inherits from base                       |
 | prod    | inherits from base                       |
-| slim    | [php.ini](Dockerfiles/slim/data/php-ini.d/) and [php-fpm.conf](Dockerfiles/slim/data/php-fpm.conf/) |
-| work    | inherits from slim                       |
 
 #### What else is available
 
@@ -332,27 +323,6 @@ docker run -d -it \
     bypanel/php-fpm:7.2-prod
 ```
 
-#### MySQL and Redis connect via 127.0.0.1 (via port-forward)
-
-Forward MySQL Port from `172.168.0.30:3306` and Redis port from `redis:6379` to the PHP docker on `127.0.0.1:3306` and `127.0.0.1:6379`. By this, your PHP files inside the docker can use `127.0.0.1` to connect to a MySQL or Redis database.
-```shell
-docker run -d -it \
-    -p 127.0.0.1:9000:9000 \
-    -e FORWARD_PORTS_TO_LOCALHOST='3306:172.168.0.30:3306, 6379:redis:6379' \
-    bypanel/php-fpm:7.2-prod
-```
-
-#### Launch Postfix for mail-catching
-
-Once you set `$ENABLE_MAIL=2`, all mails sent via any of your PHP applications no matter to which domain, are catched locally into the `devilbox` account. You can also mount the mail directory locally to hook in with mutt and read those mails.
-```shell
-docker run -d -it \
-    -p 127.0.0.1:9000:9000 \
-    -v /tmp/mail:/var/mail \
-    -e ENABLE_MAIL=2 \
-    bypanel/php-fpm:7.2-prod
-```
-
 #### Webserver and PHP-FPM
 
 `~/my-host-www` will be the directory that serves the php files (your document root). Make sure to mount it into both, php and the webserver.
@@ -371,7 +341,7 @@ docker run -d -it \
     -e PHP_FPM_SERVER_ADDR=php \
     -e PHP_FPM_SERVER_PORT=9000 \
     --link php \
-    bypanel/nginx-mainline
+    bypanel/nginx
 ```
 
 #### Docker Compose reference implementation
