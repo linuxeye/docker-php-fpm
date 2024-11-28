@@ -732,7 +732,7 @@ RUN set -eux \
 	&& curl -fL -o solr.tgz 'https://github.com/php/pecl-search_engine-solr/archive/refs/heads/master.tar.gz' \
 	&& tar --extract --directory /tmp --file solr.tgz pecl-search_engine-solr-master \
 	&& docker-php-ext-install /tmp/pecl-search_engine-solr-master \
-	&& rm -rf solr.tgz /tmp/pecl-search_engine-solr-master
+	&& rm -rf solr.tgz /tmp/pecl-search_engine-solr-master \
 	# Enabling
 	&& docker-php-ext-enable solr \
 	&& true
