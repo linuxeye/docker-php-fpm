@@ -725,14 +725,17 @@ RUN set -eux \
 
 
 ## -------------------- Installing PHP Extension: solr --------------------
-#RUN set -eux \
-#        # Installation: Generic
-#        # Type:         PECL extension
-#        # Default:      Pecl command
-#        && pecl install solr \
-#        # Enabling
-#        && docker-php-ext-enable solr \
-#        && true
+RUN set -eux \
+	# Installation: Generic
+	# Type:         GIT extension
+	# Default:      Pecl command
+	&& curl -fL -o solr.tgz 'https://github.com/php/pecl-search_engine-solr/archive/refs/heads/master.tar.gz' \
+	&& tar --extract --directory /tmp --file solr.tgz pecl-search_engine-solr-master \
+	&& docker-php-ext-install /tmp/pecl-search_engine-solr-master \
+	&& rm -rf solr.tgz /tmp/pecl-search_engine-solr-master
+	# Enabling
+	&& docker-php-ext-enable solr \
+	&& true
 
 
 # -------------------- Installing PHP Extension: sodium --------------------
