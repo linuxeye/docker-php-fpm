@@ -235,7 +235,6 @@ The provided Docker images offer different volumes to be mounted.
 [lnk_vol_startup1]: doc/docker-volumes.md#-startup1d
 [lnk_vol_startup2]: doc/docker-volumes.md#-startup2d
 [lnk_vol_log_php]: doc/docker-volumes.md#-varlogphp
-[lnk_vol_bashrc]: doc/docker-volumes.md#-etcbashrc-devilboxd
 [lnk_vol_backups]: doc/docker-volumes.md#-sharedbackups
 
 <h2>Ports</h2>
