@@ -206,6 +206,28 @@ RUN set -eux \
 	&& true
 
 
+# -------------------- Installing PHP Extension: imagick --------------------
+RUN set -eux \
+        # Installation: Version specific
+        # Type:         PECL extension
+        # Default:      Pecl command
+        && pecl install imagick \
+        # Enabling
+        && docker-php-ext-enable imagick \
+        # Generic post-command
+        && sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-6/policy.xml \
+ \
+        && true
+
+
 # -------------------- Installing PHP Extension: imap --------------------
 RUN set -eux \
 	# Generic pre-command
@@ -251,6 +273,20 @@ RUN set -eux; \
           cd ../; \
           rm -rf ioncube; \
           rm -rf ioncube.tar.gz; \
+        fi
+
+
+# -------------------- Installing PHP Extension: swoole_loader --------------------
+RUN set -eux; \
+        # Installation: Generic
+        # Type:         Custom extension
+        if [ $(dpkg-architecture --query DEB_HOST_GNU_CPU) = "aarch64" ]; then \
+          true; \
+        else \
+          EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )"; \
+          if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi; \
+          curl -sS --fail -k https://compiler.swoole.com/static/loader3.1.0/swoole_loader54.so -L -o swoole_loader.so; \ 
+          mv "swoole_loader.so" "${EXTENSION_DIR}/swoole_loader.so"; \
         fi
 
 

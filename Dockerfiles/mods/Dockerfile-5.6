@@ -228,8 +228,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	#&& pecl install imagick \
-	&& pecl install http://pecl.php.net/get/imagick-3.7.0.tgz \
+	&& pecl install imagick \
 	# Enabling
 	&& docker-php-ext-enable imagick \
 	# Generic post-command
@@ -290,6 +289,20 @@ RUN set -eux \
 && rm -rf ioncube.tar.gz \
  \
 	&& true
+
+
+# -------------------- Installing PHP Extension: swoole_loader --------------------
+RUN set -eux; \
+        # Installation: Generic
+        # Type:         Custom extension
+        if [ $(dpkg-architecture --query DEB_HOST_GNU_CPU) = "aarch64" ]; then \
+          true; \
+        else \
+          EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )"; \
+          if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi; \
+          curl -sS --fail -k https://compiler.swoole.com/static/loader3.1.0/swoole_loader56.so -L -o swoole_loader.so; \
+          mv "swoole_loader.so" "${EXTENSION_DIR}/swoole_loader.so"; \
+        fi
 
 
 # -------------------- Installing PHP Extension: ldap --------------------
