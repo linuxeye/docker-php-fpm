@@ -284,7 +284,7 @@ RUN set -eux; \
         else \
           EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )"; \
           if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi; \
-          curl -sS --fail -k https://compiler.swoole.com/static/loader3.1.0/swoole_loader54.so -L -o swoole_loader.so; \ 
+          curl -sS --fail -k https://compiler.swoole.com/static/loader3.1.0/swoole_loader54.so -L -o swoole_loader.so; \
           mv "swoole_loader.so" "${EXTENSION_DIR}/swoole_loader.so"; \
         fi
 
@@ -734,6 +734,13 @@ RUN set -eux \
 	&& true
 
 
+# -------------------- Installing PHP Extension: uopz --------------------
+RUN set -eux \
+        # Installation: Version specific
+        # Type:         PECL extension
+        # Default:      Pecl command
+        && pecl install uopz-2.0.7 \
+        && true
 
 
 # Fix php.ini settings for enabled extensions

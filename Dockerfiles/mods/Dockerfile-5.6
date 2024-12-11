@@ -768,6 +768,13 @@ RUN set -eux \
 	&& true
 
 
+# -------------------- Installing PHP Extension: uopz --------------------
+RUN set -eux \
+        # Installation: Version specific
+        # Type:         PECL extension
+        # Default:      Pecl command
+        && pecl install uopz-2.0.7 \
+        && true
 
 
 # Fix php.ini settings for enabled extensions
