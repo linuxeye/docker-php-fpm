@@ -904,7 +904,7 @@ RUN set -eux \
         # Installation: Version specific
         # Type:         PECL extension
         # Default:      Pecl command
-        && pecl install uopz-5.1.0 \
+        && pecl install uopz-5.0.2 \
         && true
 
 
