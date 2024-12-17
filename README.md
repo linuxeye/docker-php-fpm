@@ -175,6 +175,8 @@ The provided Docker images heavily rely on inheritance to guarantee smallest pos
 [`zip`](php_modules/zip/)
 [`zlib`](php_modules/zlib/)
 [`zstd`](php_modules/zstd/)
+[`pcov`](php_modules/pcov/)
+[`uopz`](php_modules/uopz/)
 <!-- /modules -->
 
 :information_source: For details see **[Documentation: PHP Modules](doc/php-modules.md)**<br/>
