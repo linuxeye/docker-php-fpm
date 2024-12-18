@@ -78,7 +78,6 @@ RUN set -eux \
 		pkg-config \
 		re2c \
 		xz-utils \
-                libcares-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 
@@ -934,7 +933,6 @@ RUN set -eux \
 	unixodbc \
 	uuid \
 	ca-certificates \
-        libcares \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
 	&& update-ca-certificates
