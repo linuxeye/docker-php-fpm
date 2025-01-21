@@ -45,10 +45,12 @@ RUN set -eux \
 ### Upgrade (install ps)
 ###
 RUN set -eux \
-	&& DEBIAN_FRONTEND=noninteractive apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-install-suggests \
+	&& echo deb http://www.deb-multimedia.org bullseye main >> /etc/apt/sources.list \
+	&& DEBIAN_FRONTEND=noninteractive apt-get update -oAcquire::AllowInsecureRepositories=true \
+	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-install-suggests --allow-unauthenticated \
 		dpkg-dev \
 		procps \
+		deb-multimedia-keyring \
 	&& rm -rf /var/lib/apt/lists/*
 
 
