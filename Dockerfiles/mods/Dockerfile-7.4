@@ -46,8 +46,6 @@ RUN set -eux \
 		libssh2-1-dev \
 		libssl-dev \
 		libtidy-dev \
-		libvips-dev \
-		libvips42 \
 		libvpx-dev \
 		libwebp-dev \
 		libxml2-dev \
@@ -237,15 +235,15 @@ RUN set -eux \
 	# Enabling
 	&& docker-php-ext-enable imagick \
 	# Generic post-command
-	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
-	&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-7/policy.xml \
 	&& true
 
 
@@ -986,7 +984,6 @@ RUN set -eux \
 	libssh2-1 \
 	libsybdb5 \
 	libtidy5deb1 \
-	libvips42 \
 	libvpx6 \
 	libwebp6 \
 	libxpm4 \
@@ -1019,15 +1016,15 @@ COPY --from=builder /usr/lib/oracle/ /usr/lib/oracle/
 ###
 RUN set -eux \
 	# ---------- imagick ----------
-	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
-&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
+&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-7/policy.xml \
   \
 	# ---------- oci8 ----------
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
