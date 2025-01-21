@@ -161,7 +161,6 @@ The provided Docker images heavily rely on inheritance to guarantee smallest pos
 [`tokenizer`](php_modules/tokenizer/)
 [`uploadprogress`](php_modules/uploadprogress/)
 [`uuid`](php_modules/uuid/)
-[`vips`](php_modules/vips/)
 [`wddx`](php_modules/wddx/)
 [`Xdebug`](php_modules/xdebug/)
 [`xhprof`](php_modules/xhprof/)
