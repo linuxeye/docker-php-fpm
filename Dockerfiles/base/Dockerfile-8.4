@@ -26,7 +26,7 @@ RUN set -eux \
 ### Upgrade (install ps)
 ###
 RUN set -eux \
-	&& echo deb http://www.deb-multimedia.org bullseye main >> /etc/apt/sources.list \
+	&& echo deb http://www.deb-multimedia.org bookworm main non-free > /etc/apt/sources.list.d/deb-multimedia.list \
 	&& DEBIAN_FRONTEND=noninteractive apt-get update -oAcquire::AllowInsecureRepositories=true \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-install-suggests --allow-unauthenticated \
 		dpkg-dev \
