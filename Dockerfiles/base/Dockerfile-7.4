@@ -48,7 +48,7 @@ RUN set -eux \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install --reinstall -y --no-install-recommends --no-install-suggests libc-bin \
 	&& echo deb http://www.deb-multimedia.org bullseye main >> /etc/apt/sources.list \
 	&& DEBIAN_FRONTEND=noninteractive apt-get update -oAcquire::AllowInsecureRepositories=true \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y ---no-install-recommends --no-install-suggests --allow-unauthenticated \
+	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-install-suggests --allow-unauthenticated \
 		dpkg-dev \
 		procps \
 		deb-multimedia-keyring \
