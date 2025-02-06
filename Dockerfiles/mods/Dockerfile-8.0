@@ -970,6 +970,7 @@ RUN set -eux \
 	unixodbc \
 	uuid \
 	ca-certificates \
+	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
 	&& update-ca-certificates
