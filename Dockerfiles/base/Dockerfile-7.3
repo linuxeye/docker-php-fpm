@@ -1,6 +1,6 @@
 # vi: ft=dockerfile
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-base.j2 instead.
-FROM php:7.3-fpm
+FROM php:7.3-fpm-buster
 MAINTAINER "Justo" <lj2007331@gmail.com>
 
 
@@ -45,7 +45,7 @@ RUN set -eux \
 ### Upgrade (install ps)
 ###
 RUN set -eux \
-	&& echo deb http://www.deb-multimedia.org bullseye main non-free > /etc/apt/sources.list.d/deb-multimedia.list \
+	&& echo deb http://www.deb-multimedia.org buster main non-free > /etc/apt/sources.list.d/deb-multimedia.list \
 	&& DEBIAN_FRONTEND=noninteractive apt-get update -oAcquire::AllowInsecureRepositories=true \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-install-suggests --allow-unauthenticated \
 		dpkg-dev \
