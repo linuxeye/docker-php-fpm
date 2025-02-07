@@ -58,6 +58,7 @@ RUN set -eux \
 		unixodbc-dev \
 		uuid-dev \
 		zlib1g-dev \
+		libbrotli-dev \
 # Build tools
 		autoconf \
 		bison \
@@ -964,6 +965,7 @@ RUN set -eux \
 	snmp \
 	unixodbc \
 	uuid \
+	libbrotli1 \
 	ca-certificates \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
