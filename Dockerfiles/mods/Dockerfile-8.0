@@ -18,7 +18,6 @@ RUN set -eux \
 		libc-ares-dev \
 		libc-client-dev \
 		libcurl4-openssl-dev \
-		libenchant-2-dev \
 		libevent-dev \
 		libfbclient2 \
 		libfreetype6-dev \
@@ -29,8 +28,7 @@ RUN set -eux \
 		libkrb5-dev \
 		libldap2-dev \
 		liblz4-dev \
-		liblzf-dev \
-		libmagickwand-7-dev \
+		libmagickwand-dev \
 		libmariadb-dev \
 		libmcrypt-dev \
 		libmemcached-dev \
@@ -939,16 +937,14 @@ RUN set -eux \
 	libaspell15 \
 	libc-ares2 \
 	libc-client2007e \
-	libenchant-2-2 \
 	libevent-2.1-6 \
 	libfbclient2 \
-	libffi7 \
+	libffi6 \
 	libfreetype6 \
 	libicu63 \
 	libjpeg62-turbo \
 	liblz4-1 \
-	liblzf1 \
-	libmagickwand-7-10 \
+	libmagickwand-6.q16-6 \
 	libmariadbd19 \
 	libmcrypt4 \
 	libmemcachedutil2 \
