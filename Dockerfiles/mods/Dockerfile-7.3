@@ -635,9 +635,6 @@ fi; \
 if php -m | grep -q "lz4"; then \
   REDIS_ARGS="${REDIS_ARGS} --enable-redis-lz4 --with-liblz4=/usr"; \
 fi; \
-if php -m | grep -q "lzf"; then \
-  REDIS_ARGS="${REDIS_ARGS} --enable-redis-lzf --with-liblzf=/usr"; \
-fi; \
 if php -m | grep -q "msgpack"; then \
   REDIS_ARGS="${REDIS_ARGS} --enable-redis-msgpack"; \
 fi; \
