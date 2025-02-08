@@ -32,15 +32,6 @@ ENV MY_USER="bypanel" \
 	MY_GID="1000" \
 	PHP_VERSION="7.0"
 
-###
-### Update Apt
-###
-RUN set -eux \
-	&& sed -i 's@deb.debian.org@archive.debian.org@g' /etc/apt/sources.list \
-	&& sed -i 's@security.debian.org@archive.debian.org@g' /etc/apt/sources.list \
-	&& sed -i '/stretch-updates/d' /etc/apt/sources.list \
-	&& DEBIAN_FRONTEND=noninteractive apt-get update
-
 
 ###
 ### User/Group
