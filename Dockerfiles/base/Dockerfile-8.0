@@ -1,6 +1,6 @@
 # vi: ft=dockerfile
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-base.j2 instead.
-FROM php:8.0-fpm-buster
+FROM bypanel/php-fpm-8.0:buster
 MAINTAINER "Justo" <lj2007331@gmail.com>
 
 
