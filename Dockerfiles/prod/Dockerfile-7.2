@@ -15,6 +15,7 @@ RUN set -eux \
 		postfix-pcre \
 		cron \
 		rsyslog \
+	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
 # Fix: rsyslogd: imklog: cannot open kernel log (/proc/kmsg): Operation not permitted.
