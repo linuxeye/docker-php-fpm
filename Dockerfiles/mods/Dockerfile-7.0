@@ -24,7 +24,6 @@ RUN set -eux \
 		libfreetype6-dev \
 		libgmp-dev \
 		libib-util \
-		libicu-dev \
 		libjpeg-dev \
 		libkrb5-dev \
 		libldap2-dev \
@@ -268,12 +267,12 @@ RUN set -eux \
 
 
 # -------------------- Installing PHP Extension: intl --------------------
-RUN set -eux \
-	# Installation: Version specific
-	# Type:         Built-in extension
-	# Installation
-	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) intl \
-	&& true
+#RUN set -eux \
+#	# Installation: Version specific
+#	# Type:         Built-in extension
+#	# Installation
+#	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) intl \
+#	&& true
 
 
 # -------------------- Installing PHP Extension: ioncube --------------------
@@ -951,7 +950,6 @@ RUN set -eux \
 	libevent-2.1-6 \
 	libfbclient2 \
 	libfreetype6 \
-	libicu63 \
 	libjpeg62-turbo \
 	liblz4-1 \
 	libmagickwand-6.q16-6 \
@@ -1099,8 +1097,8 @@ RUN set -eux \
 	&& php-fpm -m | grep -oiE '^imap$' \
 	&& php -m | grep -oiE '^interbase$' \
 	&& php-fpm -m | grep -oiE '^interbase$' \
-	&& php -m | grep -oiE '^intl$' \
-	&& php-fpm -m | grep -oiE '^intl$' \
+	#&& php -m | grep -oiE '^intl$' \
+	#&& php-fpm -m | grep -oiE '^intl$' \
 	&& php -m | grep -oiE '^json$' \
 	&& php-fpm -m | grep -oiE '^json$' \
 	&& php -m | grep -oiE '^ldap$' \
