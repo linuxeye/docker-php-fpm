@@ -395,7 +395,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install mongodb \
+	&& pecl install mongodb-1.20.1 \
 	# Enabling
 	&& docker-php-ext-enable mongodb \
 	&& true
