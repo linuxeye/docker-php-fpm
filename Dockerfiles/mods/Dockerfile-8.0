@@ -904,7 +904,7 @@ RUN set -eux \
 
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
 FROM bypanel/php-fpm:8.0-base as final
-MAINTAINER "Justo" <lj2007331@gmail.com>
+LABEL org.opencontainers.image.authors="lj2007331@gmail.com"
 
 ###
 ### Labels

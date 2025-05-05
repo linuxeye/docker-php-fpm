@@ -1,7 +1,7 @@
 # vi: ft=dockerfile
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-prod.j2 instead.
 FROM bypanel/php-fpm:8.0-mods
-MAINTAINER "Justo" <lj2007331@gmail.com>
+LABEL org.opencontainers.image.authors="lj2007331@gmail.com"
 
 
 ###
