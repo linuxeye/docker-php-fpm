@@ -325,7 +325,7 @@ RUN set -eux \
 	&& git clone https://github.com/kjdev/php-ext-lz4 /tmp/lz4 \
 	&& cd /tmp/lz4 \
 	# Custom:       Branch
-	&& git checkout $(git tag | grep -E '^[.0-9]+$' | sort -V | tail -1) \
+	&& git checkout $(git tag | grep -E '^0.4.[.0-9]+$' | sort -V | tail -1) \
 	# Default:      Install command
 	&& phpize \
 	&& ./configure  --enable-lz4 --with-lz4-includedir=/usr \
