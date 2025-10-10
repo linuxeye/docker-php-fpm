@@ -413,7 +413,8 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install oauth \
+	#&& pecl install oauth-2.0.9 \
+	&& pecl install http://pecl.php.net/get/oauth-2.0.9.tgz \
 	# Enabling
 	&& docker-php-ext-enable oauth \
 	&& true
