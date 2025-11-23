@@ -352,8 +352,13 @@ RUN set -eux \
 RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
+	&& curl -fL -o pecl-memcache.tgz 'https://github.com/websupport-sk/pecl-memcache/archive/refs/heads/main.tar.gz' \
+	&& tar --extract --directory /tmp --file pecl-memcache.tgz pecl-memcache-main \
+	&& docker-php-ext-install /tmp/pecl-memcache-main \
+	&& rm -rf pecl-memcache.tgz pecl-memcache-main \
+	\
 	# Default:      Pecl command
-	&& pecl install memcache \
+	#&& pecl install memcache \
 	# Enabling
 	&& docker-php-ext-enable memcache \
 	&& true
@@ -372,21 +377,10 @@ RUN set -eux \
 
 # -------------------- Installing PHP Extension: memcached --------------------
 RUN set -eux \
-	# Installation: Version specific
-	# Type:         GIT extension
-	&& git clone https://github.com/php-memcached-dev/php-memcached /tmp/memcached \
-	&& cd /tmp/memcached \
-	# Custom:       Branch
-	&& git checkout master \
-	# Custom:       Install command
-	&& true \
-# FIXME: This is a work-around to mitigate compile error with PHP 8.5
-&& sed -i'' 's/\sTSRMLS_CC//g' php_memcached_session.c \
-&& phpize \
-&& ./configure --enable-memcached \
-&& make -j$(getconf _NPROCESSORS_ONLN) \
-&& make install \
- \
+	# Installation: Generic
+	# Type:         PECL extension
+	# Custom:       Pecl command
+	&& printf "\n\n\nyes\nyes\nyes\n" | pecl install memcached \
 	# Enabling
 	&& docker-php-ext-enable memcached \
 	&& true

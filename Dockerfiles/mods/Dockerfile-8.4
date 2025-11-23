@@ -367,21 +367,10 @@ RUN set -eux \
 
 # -------------------- Installing PHP Extension: memcached --------------------
 RUN set -eux \
-	# Installation: Version specific
-	# Type:         GIT extension
-	&& git clone https://github.com/php-memcached-dev/php-memcached /tmp/memcached \
-	&& cd /tmp/memcached \
-	# Custom:       Branch
-	&& git checkout master \
-	# Custom:       Install command
-	&& true \
-# FIXME: This is a work-around to mitigate compile error with PHP 8.4
-&& sed -i'' 's/\sTSRMLS_CC//g' php_memcached_session.c \
-&& phpize \
-&& ./configure --enable-memcached \
-&& make -j$(getconf _NPROCESSORS_ONLN) \
-&& make install \
- \
+	# Installation: Generic
+	# Type:         PECL extension
+	# Custom:       Pecl command
+	&& printf "\n\n\nyes\nyes\nyes\n" | pecl install memcached \
 	# Enabling
 	&& docker-php-ext-enable memcached \
 	&& true
