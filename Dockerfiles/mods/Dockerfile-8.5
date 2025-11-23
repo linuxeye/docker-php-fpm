@@ -224,7 +224,12 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install igbinary \
+	&& curl -fL -o igbinary.tgz 'https://github.com/igbinary/igbinary/archive/refs/heads/master.tar.gz' \
+	&& tar --extract --directory /tmp --file igbinary.tgz igbinary-master \
+	&& docker-php-ext-install /tmp/igbinary-master \
+	&& rm -rf igbinary.tgz /tmp/igbinary-master \
+	\
+	#&& pecl install igbinary \
 	# Enabling
 	&& docker-php-ext-enable igbinary \
 	&& true
