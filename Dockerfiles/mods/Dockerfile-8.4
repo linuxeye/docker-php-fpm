@@ -235,12 +235,12 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         GIT extension
 	# Default:      Pecl command
-	&& curl -fL -o imagick.tgz 'https://github.com/michalananapps/imagick/archive/refs/heads/master.tar.gz' \
-	&& tar --extract --directory /tmp --file imagick.tgz imagick-master \
-	&& docker-php-ext-install /tmp/imagick-master \
-	&& rm -rf imagick.tgz /tmp/imagick-master \
-	\
-	#&& pecl install imagick \
+	#&& curl -fL -o imagick.tgz 'https://github.com/michalananapps/imagick/archive/refs/heads/master.tar.gz' \
+	#&& tar --extract --directory /tmp --file imagick.tgz imagick-master \
+	#&& docker-php-ext-install /tmp/imagick-master \
+	#&& rm -rf imagick.tgz /tmp/imagick-master \
+	#\
+	&& pecl install imagick \
 	# Enabling
 	&& docker-php-ext-enable imagick \
 	# Generic post-command

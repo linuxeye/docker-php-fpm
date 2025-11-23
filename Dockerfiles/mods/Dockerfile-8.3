@@ -235,15 +235,15 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& curl -fL -o imagick.tgz 'https://pecl.php.net/get/imagick-3.7.0.tgz' \
-	&& tar --extract --directory /tmp --file imagick.tgz imagick-3.7.0 \
-	&& grep '^//#endif$' /tmp/imagick-3.7.0/Imagick.stub.php \
-	&& test "$(grep -c '^//#endif$' /tmp/imagick-3.7.0/Imagick.stub.php)" = '1' \
-	&& sed -i -e 's!^//#endif$!#endif!' /tmp/imagick-3.7.0/Imagick.stub.php \
-	&& docker-php-ext-install /tmp/imagick-3.7.0 \
-	&& rm -rf imagick.tgz /tmp/imagick-3.7.0 \
-	\
-	#&& pecl install imagick \
+	#&& curl -fL -o imagick.tgz 'https://pecl.php.net/get/imagick-3.7.0.tgz' \
+	#&& tar --extract --directory /tmp --file imagick.tgz imagick-3.7.0 \
+	#&& grep '^//#endif$' /tmp/imagick-3.7.0/Imagick.stub.php \
+	#&& test "$(grep -c '^//#endif$' /tmp/imagick-3.7.0/Imagick.stub.php)" = '1' \
+	#&& sed -i -e 's!^//#endif$!#endif!' /tmp/imagick-3.7.0/Imagick.stub.php \
+	#&& docker-php-ext-install /tmp/imagick-3.7.0 \
+	#&& rm -rf imagick.tgz /tmp/imagick-3.7.0 \
+	#\
+	&& pecl install imagick \
 	# Enabling
 	&& docker-php-ext-enable imagick \
 	# Generic post-command
