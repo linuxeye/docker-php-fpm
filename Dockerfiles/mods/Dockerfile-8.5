@@ -420,18 +420,22 @@ RUN set -eux \
 RUN set -eux \
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
 	&& if [ "$ARCH" = "x86_64" ]; then \
-	    CLIENT_FILE="instantclient-basic-linuxx64-19.29.0.0.0dbru.zip" \
-	    && SDK_FILE="instantclient-sdk-linuxx64-19.29.0.0.0dbru.zip"; \
+	    CLIENT_URL="https://download.oracle.com/otn_software/linux/instantclient/1929000/instantclient-basic-linux.x64-19.29.0.0.0dbru.zip" \
+	    && CLIENT_FILE="instantclient-basic-linux.x64-19.29.0.0.0dbru.zip" \
+	    && SDK_URL="https://download.oracle.com/otn_software/linux/instantclient/1929000/instantclient-sdk-linux.x64-19.29.0.0.0dbru.zip" \
+	    && SDK_FILE="instantclient-sdk-linux.x64-19.29.0.0.0dbru.zip" \
 	elif [ "$ARCH" = "aarch64" ]; then \
-	    CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+	    CLIENT_URL="https://download.oracle.com/otn_software/linux/instantclient/1928000/instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+	    && CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+            && SDK_URL="https://download.oracle.com/otn_software/linux/instantclient/1928000/instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip" \
 	    && SDK_FILE="instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip"; \
 	else \
 	    echo "Unsupported architecture: $ARCH" && exit 1; \
 	fi \
 	\
 	# 下载 Oracle Instant Client
-	&& curl -fL -o -O /tmp/$CLIENT_FILE "https://download.oracle.com/otn_software/linux/instantclient/$CLIENT_FILE" \
-	&& curl -fL -o -O /tmp/$SDK_FILE "https://download.oracle.com/otn_software/linux/instantclient/$SDK_FILE" \
+	&& curl -fL -o /tmp/$CLIENT_FILE $CLIENT_URL \
+	&& curl -fL -o /tmp/$SDK_FILE $SDK_URL \
 	\
 	# 解压到 /usr/local
 	&& unzip -q /tmp/$CLIENT_FILE -d /usr/local/ \
@@ -515,18 +519,22 @@ RUN set -eux \
 RUN set -eux \
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
 	&& if [ "$ARCH" = "x86_64" ]; then \
-	    CLIENT_FILE="instantclient-basic-linuxx64-19.29.0.0.0dbru.zip" \
-	    && SDK_FILE="instantclient-sdk-linuxx64-19.29.0.0.0dbru.zip"; \
+	    CLIENT_URL="https://download.oracle.com/otn_software/linux/instantclient/1929000/instantclient-basic-linux.x64-19.29.0.0.0dbru.zip" \
+	    && CLIENT_FILE="instantclient-basic-linux.x64-19.29.0.0.0dbru.zip" \
+	    && SDK_URL="https://download.oracle.com/otn_software/linux/instantclient/1929000/instantclient-sdk-linux.x64-19.29.0.0.0dbru.zip" \
+	    && SDK_FILE="instantclient-sdk-linux.x64-19.29.0.0.0dbru.zip" \
 	elif [ "$ARCH" = "aarch64" ]; then \
-	    CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+	    CLIENT_URL="https://download.oracle.com/otn_software/linux/instantclient/1928000/instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+	    && CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+	    && SDK_URL="https://download.oracle.com/otn_software/linux/instantclient/1928000/instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip" \
 	    && SDK_FILE="instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip"; \
 	else \
 	    echo "Unsupported architecture: $ARCH" && exit 1; \
 	fi \
 	\
 	# 下载 Oracle Instant Client
-	&& curl -fL -o -O /tmp/$CLIENT_FILE "https://download.oracle.com/otn_software/linux/instantclient/$CLIENT_FILE" \
-        && curl -fL -o -O /tmp/$SDK_FILE "https://download.oracle.com/otn_software/linux/instantclient/$SDK_FILE" \
+	&& curl -fL -o /tmp/$CLIENT_FILE $CLIENT_URL \
+	&& curl -fL -o /tmp/$SDK_FILE $SDK_URL \
 	\
 	# 解压到 /usr/local
 	&& unzip -q /tmp/$CLIENT_FILE -d /usr/local/ \
