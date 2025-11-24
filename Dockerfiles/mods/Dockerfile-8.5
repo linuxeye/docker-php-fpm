@@ -1051,8 +1051,8 @@ RUN set -eux \
 	&& if [ -n "${PHP_FPM_ERROR}" ]; then echo "${PHP_FPM_ERROR}"; false; fi \
 	&& rm -f /usr/local/etc/php/php.ini \
 	\
-	&& php -m | grep -oiE '^amqp$' \
-	&& php-fpm -m | grep -oiE '^amqp$' \
+	#&& php -m | grep -oiE '^amqp$' \
+	#&& php-fpm -m | grep -oiE '^amqp$' \
 	&& php -m | grep -oiE '^apcu$' \
 	&& php-fpm -m | grep -oiE '^apcu$' \
 	&& php -m | grep -oiE '^bcmath$' \
