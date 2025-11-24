@@ -586,7 +586,7 @@ RUN set -eux \
 	# && pecl install pdo_sqlsrv \
 	# Installation: Version specific
 	# Type:         GIT extension
-	&& git clone https://github.com/microsoft/msphpsql /tmp/msphpsql
+	&& git clone https://github.com/microsoft/msphpsql /tmp/msphpsql \
 	&& cd /tmp/msphpsql \
 	&& sed -i 's/= dbh->error_mode/= (enum pdo_error_mode) dbh->error_mode/' pdo_dbh.cpp \
 	&& sed -i 's/zval_ptr_dtor( &dbh->query_stmt_zval );/OBJ_RELEASE(dbh->query_stmt_obj);dbh->query_stmt_obj=NULL;/' php_pdo_sqlsrv_int.h \
