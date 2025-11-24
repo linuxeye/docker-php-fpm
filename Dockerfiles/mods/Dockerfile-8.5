@@ -583,7 +583,19 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install pdo_sqlsrv \
+	# && pecl install pdo_sqlsrv \
+	# Installation: Version specific
+	# Type:         GIT extension
+	&& git clone https://github.com/microsoft/msphpsql /tmp/msphpsql
+	&& cd /tmp/msphpsql \
+	&& sed -i 's/= dbh->error_mode/= (enum pdo_error_mode) dbh->error_mode/' pdo_dbh.cpp \
+	&& sed -i 's/zval_ptr_dtor( &dbh->query_stmt_zval );/OBJ_RELEASE(dbh->query_stmt_obj);dbh->query_stmt_obj=NULL;/' php_pdo_sqlsrv_int.h \
+	# Default:      Install command
+	&& phpize \
+	&& ./configure --with-php-config=$(which php-config) \
+	&& make -j$(getconf _NPROCESSORS_ONLN) \
+	&& make install \
+	&& cd /tmp && rm -rf /tmp/msphpsql \
 	# Enabling
 	&& docker-php-ext-enable pdo_sqlsrv \
 	&& true
