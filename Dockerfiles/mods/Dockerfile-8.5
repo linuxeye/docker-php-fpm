@@ -418,35 +418,36 @@ RUN set -eux \
 
 # -------------------- Installing PHP Extension: oci8 --------------------
 RUN set -eux \
-	# Generic pre-command
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
-&& ORACLE_HREF="$( \
-    curl -sS https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/ \
-    | tac \
-    | tac \
-    | grep -Eo 'href="getPackage/oracle-instantclient.+basiclite.+rpm"' \
-    | grep -v "19.10.0.0.0-2" \
-    | tail -1 \
-)" \
-&& ORACLE_VERSION_MAJOR="$( echo "${ORACLE_HREF}" | grep -Eo 'instantclient[.0-9]+' | sed 's/instantclient//g' )" \
-&& ORACLE_VERSION_FULL="$( echo "${ORACLE_HREF}" | grep -Eo 'basiclite-[-.0-9]+' | sed -e 's/basiclite-//g' -e 's/\.$//g' )" \
-\
-&& rpm --import http://yum.oracle.com/RPM-GPG-KEY-oracle-ol7 \
-&& curl -sS -o /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-basiclite-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPackage/oracle-instantclient${ORACLE_VERSION_MAJOR}-basiclite-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-&& curl -sS -o /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-devel-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPackage/oracle-instantclient${ORACLE_VERSION_MAJOR}-devel-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-&& alien \
-  -v \
-  --target=$( dpkg --print-architecture ) \
-  -i /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-basiclite-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-&& alien \
-  -v \
-  --target=$( dpkg --print-architecture ) \
-  -i /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-devel-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-&& rm -f /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-basiclite-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
-&& rm -f /tmp/oracle-instantclient${ORACLE_VERSION_MAJOR}-devel-${ORACLE_VERSION_FULL}.${ARCH}.rpm \
- \
+	&& if [ "$ARCH" = "x86_64" ]; then \
+	    CLIENT_FILE="instantclient-basic-linuxx64-19.28.0.0.0dbru.zip" \
+	    && SDK_FILE="instantclient-sdk-linuxx64-19.28.0.0.0dbru.zip"; \
+	elif [ "$ARCH" = "aarch64" ]; then \
+	    CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
+	    && SDK_FILE="instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip"; \
+	else \
+	    echo "Unsupported architecture: $ARCH" && exit 1; \
+	fi \
+	\
+	# 下载 Oracle Instant Client
+	&& curl -fL -o -O /tmp/$CLIENT_FILE "https://download.oracle.com/otn_software/linux/instantclient/$CLIENT_FILE" \
+	&& curl -fL -o -O /tmp/$SDK_FILE "https://download.oracle.com/otn_software/linux/instantclient/$SDK_FILE" \
+	\
+	# 解压到 /usr/local
+	&& unzip -q /tmp/$CLIENT_FILE -d /usr/local/ \
+	&& unzip -q /tmp/$SDK_FILE -d /usr/local/ \
+	\
+	# 创建符号链接（根据实际解压的目录名）
+	&& ORACLE_DIR=$(find /usr/local -maxdepth 1 -name "instantclient_*" -type d | head -1) \
+	&& ln -sf $ORACLE_DIR /usr/local/instantclient \
+	\
+	# 配置库路径
+	&& echo /usr/local/instantclient > /etc/ld.so.conf.d/oracle-instantclient.conf \
+	&& ldconfig \
+	\
+	# 清理临时文件
+	&& rm -f /tmp/instantclient-*.zip \
+	\
 	# Installation: Version specific
 	# Type:         GIT extension
 	&& git clone https://github.com/php/pecl-database-oci8 /tmp/pecl-database-oci8 \
@@ -455,24 +456,10 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 	&& git checkout $(git tag | grep -E 'v[.0-9]+$' | sort -V | tail -1) \
 	# Default:      Install command
 	&& phpize \
-	&& ./configure --with-oci8=instantclient,/usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/,${ORACLE_VERSION_MAJOR} \
+	&& ./configure --with-oci8=instantclient,/usr/local/instantclient \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
 	&& make install \
 	&& cd /tmp && rm -rf /tmp/pecl-database-oci8 \
-	# Generic post-command
-	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
-&& ORACLE_HREF="$( \
-    curl -sS https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/ \
-    | tac \
-    | tac \
-    | grep -Eo 'href="getPackage/oracle-instantclient.+basiclite.+rpm"' \
-    | grep -v "19.10.0.0.0-2" \
-    | tail -1 \
-)" \
-&& ORACLE_VERSION_MAJOR="$( echo "${ORACLE_HREF}" | grep -Eo 'instantclient[.0-9]+' | sed 's/instantclient//g' )" \
-&& ORACLE_VERSION_FULL="$( echo "${ORACLE_HREF}" | grep -Eo 'basiclite-[-.0-9]+' | sed -e 's/basiclite-//g' -e 's/\.$//g' )" \
-&& (ln -sf /usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/*.so* /usr/lib/ || true) \
- \
 	# Enabling
 	&& docker-php-ext-enable oci8 \
 	&& true
@@ -538,8 +525,8 @@ RUN set -eux \
 	fi \
 	\
 	# 下载 Oracle Instant Client
-	&& wget --progress=dot:giga --no-check-certificate -O /tmp/$CLIENT_FILE "https://download.oracle.com/otn_software/linux/instantclient/$CLIENT_FILE" \
-	&& wget --progress=dot:giga --no-check-certificate -O /tmp/$SDK_FILE "https://download.oracle.com/otn_software/linux/instantclient/$SDK_FILE" \
+	&& curl -fL -o -O /tmp/$CLIENT_FILE "https://download.oracle.com/otn_software/linux/instantclient/$CLIENT_FILE" \
+        && curl -fL -o -O /tmp/$SDK_FILE "https://download.oracle.com/otn_software/linux/instantclient/$SDK_FILE" \
 	\
 	# 解压到 /usr/local
 	&& unzip -q /tmp/$CLIENT_FILE -d /usr/local/ \
@@ -899,7 +886,7 @@ RUN set -eux \
 
 # Fix oracle dir for images that don't have oci installed
 RUN set -eux \
-	&& mkdir -p /usr/lib/oracle/
+	&& mkdir -p /usr/local/instantclient/
 
 # Shrink everything down
 RUN set -eux \
@@ -968,7 +955,7 @@ COPY --from=builder ${EXT_DIR}/ ${EXT_DIR}/
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY --from=builder /usr/local/lib/ /usr/local/lib/
-COPY --from=builder /usr/lib/oracle/ /usr/lib/oracle/
+COPY --from=builder /usr/local/instantclient/ /usr/local/instantclient/
 
 
 ###
@@ -985,20 +972,6 @@ RUN set -eux \
 && sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-7/policy.xml \
 && sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
 && sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-7/policy.xml \
-  \
-	# ---------- oci8 ----------
-	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
-&& ORACLE_HREF="$( \
-    curl -sS https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/ \
-    | tac \
-    | tac \
-    | grep -Eo 'href="getPackage/oracle-instantclient.+basiclite.+rpm"' \
-    | grep -v "19.10.0.0.0-2" \
-    | tail -1 \
-)" \
-&& ORACLE_VERSION_MAJOR="$( echo "${ORACLE_HREF}" | grep -Eo 'instantclient[.0-9]+' | sed 's/instantclient//g' )" \
-&& ORACLE_VERSION_FULL="$( echo "${ORACLE_HREF}" | grep -Eo 'basiclite-[-.0-9]+' | sed -e 's/basiclite-//g' -e 's/\.$//g' )" \
-&& (ln -sf /usr/lib/oracle/${ORACLE_VERSION_MAJOR}/client64/lib/*.so* /usr/lib/ || true) \
   \
 	&& true
 
