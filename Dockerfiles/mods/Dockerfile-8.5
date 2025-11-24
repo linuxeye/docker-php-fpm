@@ -755,7 +755,15 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install solr \
+	#&& pecl install solr \
+	# Type:         GIT extension
+	&& git clone https://github.com/php/pecl-search_engine-solr /tmp/solr \
+	&& cd /tmp/solr \
+	# Default:      Install command
+	&& phpize \
+	&& ./configure \
+	&& make -j$(getconf _NPROCESSORS_ONLN) \
+	&& make install \
 	# Enabling
 	&& docker-php-ext-enable solr \
 	&& true
