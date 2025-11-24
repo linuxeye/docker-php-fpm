@@ -440,12 +440,12 @@ RUN set -eux \
 	&& curl -fL -o /tmp/$SDK_FILE $SDK_URL \
 	\
 	# 解压到 /usr/local
-	&& unzip -q /tmp/$CLIENT_FILE -d /usr/local/ \
-	&& unzip -q /tmp/$SDK_FILE -d /usr/local/ \
+	&& unzip -q -o /tmp/$CLIENT_FILE -d /usr/local/ \
+	&& unzip -q -o /tmp/$SDK_FILE -d /usr/local/ \
 	\
 	# 创建符号链接（根据实际解压的目录名）
 	&& ORACLE_DIR=$(find /usr/local -maxdepth 1 -name "instantclient_*" -type d | head -1) \
-	&& ln -sf $ORACLE_DIR /usr/local/instantclient \
+	&& mv $ORACLE_DIR /usr/local/instantclient \
 	\
 	# 配置库路径
 	&& echo /usr/local/instantclient > /etc/ld.so.conf.d/oracle-instantclient.conf \
@@ -540,12 +540,12 @@ RUN set -eux \
 	&& curl -fL -o /tmp/$SDK_FILE $SDK_URL \
 	\
 	# 解压到 /usr/local
-	&& unzip -q /tmp/$CLIENT_FILE -d /usr/local/ \
-	&& unzip -q /tmp/$SDK_FILE -d /usr/local/ \
+	&& unzip -q -o /tmp/$CLIENT_FILE -d /usr/local/ \
+	&& unzip -q -o /tmp/$SDK_FILE -d /usr/local/ \
 	\
 	# 创建符号链接（根据实际解压的目录名）
 	&& ORACLE_DIR=$(find /usr/local -maxdepth 1 -name "instantclient_*" -type d | head -1) \
-	&& ln -sf $ORACLE_DIR /usr/local/instantclient \
+	&& mv $ORACLE_DIR /usr/local/instantclient \
 	\
 	# 配置库路径
 	&& echo /usr/local/instantclient > /etc/ld.so.conf.d/oracle-instantclient.conf \
