@@ -420,8 +420,8 @@ RUN set -eux \
 RUN set -eux \
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
 	&& if [ "$ARCH" = "x86_64" ]; then \
-	    CLIENT_FILE="instantclient-basic-linuxx64-19.28.0.0.0dbru.zip" \
-	    && SDK_FILE="instantclient-sdk-linuxx64-19.28.0.0.0dbru.zip"; \
+	    CLIENT_FILE="instantclient-basic-linuxx64-19.29.0.0.0dbru.zip" \
+	    && SDK_FILE="instantclient-sdk-linuxx64-19.29.0.0.0dbru.zip"; \
 	elif [ "$ARCH" = "aarch64" ]; then \
 	    CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
 	    && SDK_FILE="instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip"; \
@@ -515,8 +515,8 @@ RUN set -eux \
 RUN set -eux \
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
 	&& if [ "$ARCH" = "x86_64" ]; then \
-	    CLIENT_FILE="instantclient-basic-linuxx64-19.28.0.0.0dbru.zip" \
-	    && SDK_FILE="instantclient-sdk-linuxx64-19.28.0.0.0dbru.zip"; \
+	    CLIENT_FILE="instantclient-basic-linuxx64-19.29.0.0.0dbru.zip" \
+	    && SDK_FILE="instantclient-sdk-linuxx64-19.29.0.0.0dbru.zip"; \
 	elif [ "$ARCH" = "aarch64" ]; then \
 	    CLIENT_FILE="instantclient-basic-linux.arm64-19.28.0.0.0dbru.zip" \
 	    && SDK_FILE="instantclient-sdk-linux.arm64-19.28.0.0.0dbru.zip"; \
