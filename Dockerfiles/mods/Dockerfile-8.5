@@ -556,7 +556,8 @@ RUN set -eux \
 	\
 	# Installation: Version specific
 	# Type:         GIT extension
-	&& git clone https://github.com/php/pecl-database-pdo_oci /tmp/pecl-database-pdo_oci \
+	#&& git clone https://github.com/php/pecl-database-pdo_oci /tmp/pecl-database-pdo_oci \
+	&& git clone https://github.com/wantedxnn/pecl-database-pdo_oci /tmp/pecl-database-pdo_oci \
 	&& cd /tmp/pecl-database-pdo_oci \
 	# Default:      Install command
 	&& phpize \
