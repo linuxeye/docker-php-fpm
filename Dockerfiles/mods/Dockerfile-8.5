@@ -290,7 +290,7 @@ RUN set -eux \
 	# Type:         Custom extension
 	&& EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )" \
 && if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi \
-&& curl -sS --fail -k https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$(dpkg-architecture --query DEB_HOST_GNU_CPU | sed 's/_/-/g')_beta.tar.gz -L -o ioncube.tar.gz \
+&& curl -sS --fail -k https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$(dpkg-architecture --query DEB_HOST_GNU_CPU | sed 's/_/-/g').tar.gz -L -o ioncube.tar.gz \
 && tar xvfz ioncube.tar.gz \
 && cd ioncube \
 && cp "ioncube_loader_lin_8.5.so" "${EXTENSION_DIR}/ioncube.so" \
@@ -762,14 +762,14 @@ RUN set -eux \
 
 
 # -------------------- Installing PHP Extension: swoole --------------------
-#RUN set -eux \
-#	# Installation: Generic
-#	# Type:         PECL extension
-#	# Custom:       Pecl command
-#	&& pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="yes" enable-cares="yes" with-postgres="yes"' swoole \
-#	# Enabling
-#	&& docker-php-ext-enable swoole \
-#	&& true
+RUN set -eux \
+	# Installation: Generic
+	# Type:         PECL extension
+	# Custom:       Pecl command
+	&& pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="yes" enable-cares="yes" with-postgres="yes"' swoole \
+	# Enabling
+	&& docker-php-ext-enable swoole \
+	&& true
 
 
 # -------------------- Installing PHP Extension: sysvmsg --------------------
@@ -1163,8 +1163,8 @@ RUN set -eux \
 	&& php-fpm -m | grep -oiE '^xml$' \
 	&& php -m | grep -oiE '^zip$' \
 	&& php-fpm -m | grep -oiE '^zip$' \
-	#&& php -m | grep -oiE '^swoole$' \
-	#&& php-fpm -m | grep -oiE '^swoole$' \
+	&& php -m | grep -oiE '^swoole$' \
+	&& php-fpm -m | grep -oiE '^swoole$' \
 	&& php -m | grep -oiE '^sysvmsg$' \
 	&& php-fpm -m | grep -oiE '^sysvmsg$' \
 	&& php -m | grep -oiE '^sysvsem$' \
