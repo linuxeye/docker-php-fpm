@@ -1,6 +1,6 @@
 # vi: ft=dockerfile
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
-FROM bypanel/php-fpm:5.6-base as builder
+FROM bypanel/php-fpm:5.6-base AS builder
 
 
 ###
@@ -796,7 +796,7 @@ RUN set -eux \
 
 
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
-FROM bypanel/php-fpm:5.6-base as final
+FROM bypanel/php-fpm:5.6-base AS final
 LABEL org.opencontainers.image.authors="lj2007331@gmail.com"
 
 ###
