@@ -1,6 +1,6 @@
 # vi: ft=dockerfile
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
-FROM bypanel/php-fpm:8.1-base AS builder
+FROM bypanel/php-fpm:8.0-base AS builder
 
 
 ###
@@ -14,7 +14,6 @@ RUN set -eux \
 		freetds-dev \
 		ghostscript \
 		libaio-dev \
-		libavif-dev \
 		libbz2-dev \
 		libc-ares-dev \
 		libc-client-dev \
@@ -31,8 +30,9 @@ RUN set -eux \
 		libldap2-dev \
 		liblz4-dev \
 		liblzf-dev \
-		libmagickwand-7-dev \
+		libmagickwand-dev \
 		libmariadb-dev \
+		libmcrypt-dev \
 		libmemcached-dev \
 		libnghttp2-dev \
 		libpcre3-dev \
@@ -46,6 +46,8 @@ RUN set -eux \
 		libsodium-dev \
 		libssl-dev \
 		libtidy-dev \
+		libvips-dev \
+		libvips42 \
 		libvpx-dev \
 		libwebp-dev \
 		libxml2-dev \
@@ -59,7 +61,7 @@ RUN set -eux \
 		unixodbc-dev \
 		uuid-dev \
 		zlib1g-dev \
-		libc-ares-dev \
+		libbrotli-dev \
 # Build tools
 		autoconf \
 		bison \
@@ -198,7 +200,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         Built-in extension
 	# Custom:       configure command
-	&& docker-php-ext-configure gd --enable-gd --with-webp --with-jpeg --with-xpm --with-freetype --with-avif \
+	&& docker-php-ext-configure gd --enable-gd --with-webp --with-jpeg --with-xpm --with-freetype \
 	# Installation
 	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) gd \
 	&& true
@@ -242,16 +244,30 @@ RUN set -eux \
 	# Enabling
 	&& docker-php-ext-enable imagick \
 	# Generic post-command
-	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
-	&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
+	&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-6/policy.xml \
 	&& true
+
+
+# -------------------- Installing PHP Extension: swoole_loader --------------------
+RUN set -eux; \
+        # Installation: Generic
+        # Type:         Custom extension
+        if [ $(dpkg-architecture --query DEB_HOST_GNU_CPU) = "aarch64" ]; then \
+          true; \
+        else \
+          EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )"; \
+          if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi; \
+          curl -sS --fail -k https://compiler.swoole.com/static/loader3.1.0/swoole_loader80.so -L -o swoole_loader.so; \
+          mv "swoole_loader.so" "${EXTENSION_DIR}/swoole_loader.so"; \
+        fi
 
 
 # -------------------- Installing PHP Extension: imap --------------------
@@ -272,36 +288,6 @@ RUN set -eux \
 	# Type:         Built-in extension
 	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) intl \
 	&& true
-
-
-# -------------------- Installing PHP Extension: ioncube --------------------
-RUN set -eux \
-	# Installation: Generic
-	# Type:         Custom extension
-	&& EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )" \
-	&& if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi \
-	&& curl -sS --fail -k https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$(dpkg-architecture --query DEB_HOST_GNU_CPU | sed 's/_/-/g').tar.gz -L -o ioncube.tar.gz \
-	&& tar xvfz ioncube.tar.gz \
-	&& cd ioncube \
-	&& cp "ioncube_loader_lin_8.1.so" "${EXTENSION_DIR}/ioncube.so" \
-	&& cd ../ \
-	&& rm -rf ioncube \
-	&& rm -rf ioncube.tar.gz \
-	&& true
-
-
-# -------------------- Installing PHP Extension: swoole_loader --------------------
-RUN set -eux; \
-        # Installation: Generic
-        # Type:         Custom extension
-        if [ $(dpkg-architecture --query DEB_HOST_GNU_CPU) = "aarch64" ]; then \
-          true; \
-        else \
-          EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )"; \
-          if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi; \
-          curl -sS --fail -k https://compiler.swoole.com/static/loader3.1.0/swoole_loader81.so -L -o swoole_loader.so; \
-          mv "swoole_loader.so" "${EXTENSION_DIR}/swoole_loader.so"; \
-        fi
 
 
 # -------------------- Installing PHP Extension: ldap --------------------
@@ -345,6 +331,17 @@ RUN set -eux \
 	&& true
 
 
+# -------------------- Installing PHP Extension: mcrypt --------------------
+RUN set -eux \
+	# Installation: Generic
+	# Type:         PECL extension
+	# Default:      Pecl command
+	&& pecl install mcrypt \
+	# Enabling
+	&& docker-php-ext-enable mcrypt \
+	&& true
+
+
 # -------------------- Installing PHP Extension: memcache --------------------
 RUN set -eux \
 	# Installation: Generic
@@ -383,7 +380,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install mongodb \
+	&& pecl install mongodb-1.20.1 \
 	# Enabling
 	&& docker-php-ext-enable mongodb \
 	&& true
@@ -465,7 +462,6 @@ https://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/${ARCH}/getPack
 RUN set -eux \
 	# Installation: Generic
 	# Type:         Built-in extension
-	# Installation
 	&& docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) opcache \
 	&& true
 
@@ -560,7 +556,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install pdo_sqlsrv-5.12.0 \
+	&& pecl install pdo_sqlsrv-5.11.1 \
 	# Enabling
 	&& docker-php-ext-enable pdo_sqlsrv \
 	&& true
@@ -592,7 +588,7 @@ RUN set -eux \
 	&& git clone https://github.com/kjdev/php-ext-zstd /tmp/zstd \
 	&& cd /tmp/zstd \
 	# Custom:       Branch
-	&& git checkout $(git tag | grep -E '^[.0-9]+$' | sort -V | tail -1) \
+	&& git checkout $(git tag | grep -E '^0.13[.0-9]+$' | sort -V | tail -1) \
 	# Default:      Install command
 	&& phpize \
 	&& ./configure  --enable-zstd --with-libzstd \
@@ -624,9 +620,6 @@ fi; \
 if php -m | grep -q "lz4"; then \
   REDIS_ARGS="${REDIS_ARGS} --enable-redis-lz4 --with-liblz4=/usr"; \
 fi; \
-if php -m | grep -q "lzf"; then \
-  REDIS_ARGS="${REDIS_ARGS} --enable-redis-lzf --with-liblzf=/usr"; \
-fi; \
 if php -m | grep -q "msgpack"; then \
   REDIS_ARGS="${REDIS_ARGS} --enable-redis-msgpack"; \
 fi; \
@@ -648,7 +641,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install sqlsrv-5.12.0 \
+	&& pecl install sqlsrv-5.11.1 \
 	# Enabling
 	&& docker-php-ext-enable sqlsrv \
 	&& true
@@ -766,7 +759,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Custom:       Pecl command
-	&& pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="yes" enable-cares="yes" with-postgres="yes"' swoole-6.1.7 \
+	&& pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="yes" enable-cares="yes" with-postgres="yes"' swoole-5.1.6 \
 	# Enabling
 	&& docker-php-ext-enable swoole \
 	&& true
@@ -913,7 +906,7 @@ RUN set -eux \
 
 
 # Auto-generated via Ansible: edit ./ansible/DOCKERFILES/Dockerfile-mods.j2 instead.
-FROM bypanel/php-fpm:8.1-base AS final
+FROM bypanel/php-fpm:8.0-base AS final
 LABEL org.opencontainers.image.authors="lj2007331@gmail.com"
 
 ###
@@ -930,9 +923,9 @@ LABEL org.opencontainers.image.authors="lj2007331@gmail.com"
 #LABEL "org.opencontainers.image.source"="https://github.com/devilbox/docker-php-fpm"
 #LABEL "org.opencontainers.image.vendor"="devilbox"
 #LABEL "org.opencontainers.image.licenses"="MIT"
-#LABEL "org.opencontainers.image.ref.name"="8.1-mods"
-#LABEL "org.opencontainers.image.title"="PHP-FPM 8.1-mods"
-#LABEL "org.opencontainers.image.description"="PHP-FPM 8.1-mods"
+#LABEL "org.opencontainers.image.ref.name"="8.0-mods"
+#LABEL "org.opencontainers.image.title"="PHP-FPM 8.0-mods"
+#LABEL "org.opencontainers.image.description"="PHP-FPM 8.0-mods"
 
 
 ###
@@ -944,20 +937,20 @@ RUN set -eux \
 	ghostscript \
 	libaio1 \
 	libaspell15 \
-	libavif15 \
 	libc-ares2 \
 	libc-client2007e \
 	libenchant-2-2 \
 	libevent-2.1-7 \
 	libfbclient2 \
-	libffi8 \
+	libffi7 \
 	libfreetype6 \
-	libicu72 \
+	libicu67 \
 	libjpeg62-turbo \
 	liblz4-1 \
 	liblzf1 \
-	libmagickwand-7-10 \
+	libmagickwand-6.q16-6 \
 	libmariadbd19 \
+	libmcrypt4 \
 	libmemcachedutil2 \
 	libnghttp2-14 \
 	libpng16-16 \
@@ -966,8 +959,9 @@ RUN set -eux \
 	librdkafka1 \
 	libsybdb5 \
 	libtidy5deb1 \
-	libvpx7 \
-	libwebp7 \
+	libvips42 \
+	libvpx6 \
+	libwebp6 \
 	libxpm4 \
 	libxslt1.1 \
 	libyaml-0-2 \
@@ -976,6 +970,7 @@ RUN set -eux \
 	snmp \
 	unixodbc \
 	uuid \
+	libbrotli1 \
 	ca-certificates \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
@@ -999,15 +994,15 @@ COPY --from=builder /usr/lib/oracle/ /usr/lib/oracle/
 ###
 RUN set -eux \
 	# ---------- imagick ----------
-	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-7/policy.xml \
-&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-7/policy.xml \
+	&& sed -i'' 's|.*"thread".*|  <policy domain="resource" name="thread" value="1"/>|g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS2".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS3".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"EPS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PDF".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"XPS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="coder".*"PS".*||g' /etc/ImageMagick-6/policy.xml \
+&& sed -i'' 's|.*<policy domain="delegate".*pattern="gs".*||g' /etc/ImageMagick-6/policy.xml \
   \
 	# ---------- oci8 ----------
 	&& ARCH="$(dpkg-architecture --query DEB_HOST_GNU_CPU)" \
@@ -1031,7 +1026,7 @@ RUN set -eux \
 ###
 RUN set -eux \
 	&& echo "date.timezone=UTC" > /usr/local/etc/php/php.ini \
-	&& php -v | grep -oE 'PHP\s[.0-9]+' | grep -oE '[.0-9]+' | grep '^8.1' \
+	&& php -v | grep -oE 'PHP\s[.0-9]+' | grep -oE '[.0-9]+' | grep '^8.0' \
 	&& /usr/local/sbin/php-fpm --test \
 	\
 	&& PHP_ERROR="$( php -v 2>&1 1>/dev/null )" \
@@ -1107,6 +1102,8 @@ RUN set -eux \
 	&& php-fpm -m | grep -oiE '^lz4$' \
 	&& php -m | grep -oiE '^lzf$' \
 	&& php-fpm -m | grep -oiE '^lzf$' \
+	&& php -m | grep -oiE '^mcrypt$' \
+	&& php-fpm -m | grep -oiE '^mcrypt$' \
 	&& php -m | grep -oiE '^memcache$' \
 	&& php-fpm -m | grep -oiE '^memcache$' \
 	&& php -m | grep -oiE '^msgpack$' \
