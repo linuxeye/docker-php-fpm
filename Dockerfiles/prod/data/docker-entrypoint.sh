@@ -24,6 +24,9 @@ PHP_INI_DIR="/usr/local/etc/php"
 # php-fpm conf.d directory
 PHP_FPM_DIR="/usr/local/etc/php-fpm.d"
 
+# php extension directory
+PHP_EXTENSION_DIR=$(php-config --extension-dir)
+
 # This file holds error and access log definitions
 PHP_FPM_CONF_LOGFILE="${PHP_FPM_DIR}/zzz-entrypoint-logfiles.conf"
 PHP_INI_CONF_LOGFILE="${PHP_INI_DIR}/conf.d/zzz-entrypoint-logfiles.ini"
