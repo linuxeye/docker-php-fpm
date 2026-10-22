@@ -104,7 +104,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Custom:       Pecl command
-	&& echo "/usr" | pecl install amqp \
+	&& echo "/usr" | pecl install amqp-2.1.2 \
 	# Enabling
 	&& docker-php-ext-enable amqp \
 	&& true
