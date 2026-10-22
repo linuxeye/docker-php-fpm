@@ -414,7 +414,7 @@ RUN set -eux \
 	# Type:         PECL extension
 	# Default:      Pecl command
 	#&& pecl install https://pecl.php.net/get/oauth-2.0.9 \
-	&& pecl install https://pecl.php.net/get/http://pecl.php.net/get/oauth-2.0.9.tgz \
+	&& pecl install https://pecl.php.net/get/oauth-2.0.9 \
 	# Enabling
 	&& docker-php-ext-enable oauth \
 	&& true
@@ -680,7 +680,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install https://pecl.php.net/get/rdkafka-3.1.2 \
+	&& pecl install https://pecl.php.net/get/rdkafka-6.0.5 \
 	# Enabling
 	&& docker-php-ext-enable rdkafka \
 	&& true
