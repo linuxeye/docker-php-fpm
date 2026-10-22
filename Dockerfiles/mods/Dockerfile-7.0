@@ -681,7 +681,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install https://pecl.php.net/get/rdkafka-6.0.5 \
+	&& pecl install https://pecl.php.net/get/rdkafka-3.1.3 \
 	# Enabling
 	&& docker-php-ext-enable rdkafka \
 	&& true
