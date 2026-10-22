@@ -103,7 +103,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Custom:       Pecl command
-	&& echo "/usr" | pecl install amqp-1.11.0 \
+	&& echo "/usr" | pecl install https://pecl.php.net/get/amqp-1.11.0 \
 	# Enabling
 	&& docker-php-ext-enable amqp \
 	&& true
@@ -114,7 +114,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install apcu \
+	&& pecl install https://pecl.php.net/get/apcu \
 	# Enabling
 	&& docker-php-ext-enable apcu \
 	&& true
@@ -220,7 +220,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install igbinary \
+	&& pecl install https://pecl.php.net/get/igbinary \
 	# Enabling
 	&& docker-php-ext-enable igbinary \
 	&& true
@@ -231,7 +231,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install imagick \
+	&& pecl install https://pecl.php.net/get/imagick \
 	# Enabling
 	&& docker-php-ext-enable imagick \
 	# Generic post-command
@@ -341,7 +341,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install lzf \
+	&& pecl install https://pecl.php.net/get/lzf \
 	# Enabling
 	&& docker-php-ext-enable lzf \
 	&& true
@@ -352,7 +352,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install mcrypt-1.0.1 \
+	&& pecl install https://pecl.php.net/get/mcrypt-1.0.1 \
 	# Enabling
 	&& docker-php-ext-enable mcrypt \
 	&& true
@@ -363,7 +363,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install memcache-4.0.5.2 \
+	&& pecl install https://pecl.php.net/get/memcache-4.0.5.2 \
 	# Enabling
 	&& docker-php-ext-enable memcache \
 	&& true
@@ -374,7 +374,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install msgpack \
+	&& pecl install https://pecl.php.net/get/msgpack \
 	# Enabling
 	&& docker-php-ext-enable msgpack \
 	&& true
@@ -385,7 +385,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Custom:       Pecl command
-	&& printf "\n\n\nyes\nyes\nyes\n" | pecl install memcached \
+	&& printf "\n\n\nyes\nyes\nyes\n" | pecl install https://pecl.php.net/get/memcached \
 	# Enabling
 	&& docker-php-ext-enable memcached \
 	&& true
@@ -396,7 +396,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install mongodb-1.16.2 \
+	&& pecl install https://pecl.php.net/get/mongodb-1.16.2 \
 	# Enabling
 	&& docker-php-ext-enable mongodb \
 	&& true
@@ -415,7 +415,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install oauth \
+	&& pecl install https://pecl.php.net/get/oauth \
 	# Enabling
 	&& docker-php-ext-enable oauth \
 	&& true
@@ -572,7 +572,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install pdo_sqlsrv-5.8.1 \
+	&& pecl install https://pecl.php.net/get/pdo_sqlsrv-5.8.1 \
 	# Enabling
 	&& docker-php-ext-enable pdo_sqlsrv \
 	&& true
@@ -591,7 +591,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install psr-1.1.0 \
+	&& pecl install https://pecl.php.net/get/psr-1.1.0 \
 	# Enabling
 	&& docker-php-ext-enable psr \
 	&& true
@@ -657,7 +657,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install sqlsrv-5.8.1 \
+	&& pecl install https://pecl.php.net/get/sqlsrv-5.8.1 \
 	# Enabling
 	&& docker-php-ext-enable sqlsrv \
 	&& true
@@ -691,7 +691,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install rdkafka \
+	&& pecl install https://pecl.php.net/get/rdkafka \
 	# Enabling
 	&& docker-php-ext-enable rdkafka \
 	&& true
@@ -744,7 +744,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install solr-2.6.0 \
+	&& pecl install https://pecl.php.net/get/solr-2.6.0 \
 	# Enabling
 	&& docker-php-ext-enable solr \
 	&& true
@@ -755,7 +755,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install ssh2-1.2 \
+	&& pecl install https://pecl.php.net/get/ssh2-1.2 \
 	# Enabling
 	&& docker-php-ext-enable ssh2 \
 	&& true
@@ -777,7 +777,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install swoole-4.8.12 \
+	&& pecl install https://pecl.php.net/get/swoole-4.8.12 \
 	# Enabling
 	&& docker-php-ext-enable swoole \
 	&& true
@@ -820,7 +820,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install uploadprogress \
+	&& pecl install https://pecl.php.net/get/uploadprogress \
 	# Enabling
 	&& docker-php-ext-enable uploadprogress \
 	&& true
@@ -831,7 +831,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install uuid \
+	&& pecl install https://pecl.php.net/get/uuid \
 	# Enabling
 	&& docker-php-ext-enable uuid \
 	&& true
@@ -852,7 +852,7 @@ RUN set -eux \
 	# Installation: Version specific
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install xdebug-3.1.6 \
+	&& pecl install https://pecl.php.net/get/xdebug-3.1.6 \
 	# Enabling
 	&& docker-php-ext-enable xdebug \
 	&& true
@@ -863,7 +863,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install xhprof \
+	&& pecl install https://pecl.php.net/get/xhprof \
 	# Enabling
 	&& docker-php-ext-enable xhprof \
 	&& true
@@ -874,7 +874,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install xlswriter \
+	&& pecl install https://pecl.php.net/get/xlswriter \
 	# Enabling
 	&& docker-php-ext-enable xlswriter \
 	&& true
@@ -903,7 +903,7 @@ RUN set -eux \
 	# Installation: Generic
 	# Type:         PECL extension
 	# Default:      Pecl command
-	&& pecl install yaml \
+	&& pecl install https://pecl.php.net/get/yaml \
 	# Enabling
 	&& docker-php-ext-enable yaml \
 	&& true
@@ -914,7 +914,7 @@ RUN set -eux \
         # Installation: Version specific
         # Type:         PECL extension
         # Default:      Pecl command
-        && pecl install uopz-6.1.2 \
+        && pecl install https://pecl.php.net/get/uopz-6.1.2 \
         && true
 
 
@@ -923,7 +923,7 @@ RUN set -eux \
         # Installation: Version specific
         # Type:         PECL extension
         # Default:      Pecl command
-        && pecl install pcov \
+        && pecl install https://pecl.php.net/get/pcov \
         && true
 
 
