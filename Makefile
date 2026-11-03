@@ -145,7 +145,15 @@ rebuild: docker-arch-rebuild
 .PHONY: push
 push: check-stage-is-set
 push: check-version-is-set
-push: docker-arch-push
+push: docker-arch-push-single-platform
+
+.PHONY: docker-arch-push-single-platform
+docker-arch-push-single-platform:
+	@echo "################################################################################"
+	@echo "# Pushing Docker Image $(IMAGE):$(DOCKER_TAG)-manifest-$(subst /,-,$(ARCH))"
+	@echo "################################################################################"
+	docker tag $(IMAGE):$(DOCKER_TAG) $(IMAGE):$(DOCKER_TAG)-manifest-$(subst /,-,$(ARCH))
+	docker image push --platform $(ARCH) $(IMAGE):$(DOCKER_TAG)-manifest-$(subst /,-,$(ARCH))
 
 .PHONY: tag
 tag: check-stage-is-set
