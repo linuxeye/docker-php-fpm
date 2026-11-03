@@ -4,7 +4,7 @@ endif
 
 # Ensure additional Makefiles are present
 MAKEFILES = Makefile.docker Makefile.lint
-$(MAKEFILES): URL=https://raw.githubusercontent.com/devilbox/makefiles/master/$(@)
+$(MAKEFILES): URL=https://raw.githubusercontent.com/linuxeye/makefiles/master/$(@)
 $(MAKEFILES):
 	@if ! (curl --fail -sS -o $(@) $(URL) || wget -O $(@) $(URL)); then \
 		echo "Error, curl or wget required."; \
